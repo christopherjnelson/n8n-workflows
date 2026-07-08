@@ -5,12 +5,6 @@ An autonomous, production-grade conversational AI agent built in **n8n** utilizi
 ---
 
 ## Architecture Overview
-[Chat Trigger] ---> [ClubBot (LangChain Agent)] <---> [Window Buffer Memory]
-                                  |
-+-------------------+-------------------+---------------------------------------------------------+
-|                   |                   |                   |                        |
-[GCal_Availability]  [GCal_Events]    [GSheets_Inventory] [GSheets_Deduct] | [GCal_Create_Booking]
-
 
 * **Orchestration:** n8n LangChain Agent utilizing OpenWeight LLMs (Qwen3.6-35ba3b via OpenRouter).
 * **State Management:** Window Buffer Memory bound to the chat session ID to maintain step-by-step context.
