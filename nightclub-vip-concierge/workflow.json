@@ -1,1 +1,415 @@
 
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -400,
+        -128
+      ],
+      "id": "07b6d53d-2e0f-4296-b66f-ec1d3a9ce2f4",
+      "name": "When chat message received",
+      "webhookId": "3d57dc48-ea11-4724-86df-0a14978a5961"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=*** TEMPORAL CONTEXT ***\nToday is {{ $now.setZone('America/Detroit').toFormat('cccc, MMMM d, yyyy') }}. \nThe current time is {{ $now.setZone('America/Detroit').toFormat('h:mm a') }}.\nAll bookings must be calculated relative to this exact date and time.\n\nYou are the Digital VIP Concierge. Your goal is to finalize VIP table reservations directly. You must act as a strict state machine and follow these steps IN EXACT ORDER. You may not skip any steps.\n\nStep 1: Collect the requested date and party size (4 or 6 guests) from the user.\nStep 2: Inform the user that VIP bookings run from 8 PM to 2 AM and arrival must be strictly before 10 PM.\nStep 3: MANDATORY CHECK. You MUST execute the GCal_Availability tool for the requested date using the venue hours to verify if a matching table is free.\nStep 4: If a table is free, temporarily save the specific Resource ID of that available table in your memory.\nStep 5: Ask the guest for their preferred bottle choice, using the GSheets_Inventory tool to ensure their request is in stock.\nStep 6: MANDATORY: Once the guest confirms their bottle, immediately execute the GSheets_Deduct_Inventory tool to reduce the stock by 1.\nStep 7: Collect the guest's Full Name, Email Address, and Phone Number.\nStep 8: Only after ALL previous steps are completed, execute the GCal_Create_VIP_Booking tool, passing the 'date' (YYYY-MM-DD), contact info, bottle choice, and saved 'table_id'.\nStep 9: Confirm the reservation with the guest, restating the 8 PM–2 AM block and the mandatory 10 PM arrival deadline.\n\n*** RESOURCE DIRECTORY ***\nWhen you need to check availability or book a table, you must use these exact Google Calendar Resource IDs based on the user's party size:\n\n4-Person Tables:\n- ********@resource.calendar.google.com\n- *********@resource.calendar.google.com\n- *******@resource.calendar.google.com\n\n6-Person Tables:\n- ******g@resource.calendar.google.com\n- *******@resource.calendar.google.com\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -80,
+        -128
+      ],
+      "id": "578385dd-e8ac-4e2b-aee9-9b6a080ff1ae",
+      "name": "ClubBot"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to retrieve the live inventory, pricing, and types of liquor bottles available for VIP table bookings. The database includes Item_ID, Brand, Type (Vodka, Tequila, Whiskey, etc.), Price, and Available stock. Trigger this tool whenever a user asks what alcohol is available, asks for pricing, or asks for a specific type of liquor. If a user asks \"What tequilas do you have?\", use this tool to read the inventory and only present the brands where the Type matches Tequila and Available is greater than 0.",
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "****************"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/****************"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        112
+      ],
+      "id": "430e2517-5778-44d0-bad4-faf961ec8492",
+      "name": "GSheets_Inventory",
+      "credentials": {
+        "googleApi": {
+          "id": "rWc0WAsTXv0IWnpy",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to check if a specific VIP table is available for a requested time slot. REQUIRED INPUT: You must provide the specific Resource ID of the table you want to check into the 'table_id' parameter. Check tables one by one until you find an available one. Do not guess the IDs; reference your system instructions for the correct table IDs.",
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $fromAI('table_id') }}",
+          "mode": "id"
+        },
+        "options": {
+          "timezone": {
+            "__rl": true,
+            "value": "America/Detroit",
+            "mode": "list",
+            "cachedResultName": "America/Detroit"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -224,
+        112
+      ],
+      "id": "0d3891d4-f276-4bde-8278-797384b4e3ce",
+      "name": "GCal_Availability",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "looSNH4tw7WwwZXp",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to retrieve information about upcoming club events, such as DJ sets, themed nights, or special performances. Query this tool when a user asks about the event schedule, \"what is happening\" at the club, or specific details about upcoming shows. This tool returns event titles, dates, descriptions, and any associated metadata like entry costs.",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "*********@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Club Events Schedule"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        112
+      ],
+      "id": "eed80022-b4f3-4340-b63f-99c065b99501",
+      "name": "GCal_Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "looSNH4tw7WwwZXp",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to instantly finalize and book a VIP table reservation for the night. REQUIRED INPUTS: You must map the collected information into the following parameters: 'customer_name', 'email', 'phone', 'bottle', 'table_id', and 'date' (YYYY-MM-DD). Do not execute this tool until every piece of information is collected. After execution, explicitly inform the guest that their table is secured from 8 PM to 2 AM and remind them they must arrive by 10 PM.",
+        "calendar": {
+          "__rl": true,
+          "value": "admin@workspace.com",
+          "mode": "list",
+          "cachedResultName": "admin@workspace.com"
+        },
+        "start": "=={{ $fromAI('date') + 'T20:00:00-04:00' }}",
+        "end": "={{ DateTime.fromISO($fromAI('date')).plus({ days: 1 }).toFormat('yyyy-MM-dd') + 'T02:00:00-04:00' }}",
+        "useDefaultReminders": false,
+        "additionalFields": {
+          "attendees": [
+            "=={{ $fromAI('table_id') }}"
+          ],
+          "description": "=Phone: {{ $fromAI('phone') }} | Email: {{ $fromAI('email') }} | Bottle: {{ $fromAI('bottle') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        64,
+        112
+      ],
+      "id": "f6d54666-f6e5-4b74-8307-cf7b6afd899f",
+      "name": "GCal_Create_VIP_Booking",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "looSNH4tw7WwwZXp",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to deduct stock from the inventory spreadsheet immediately after a guest confirms their bottle choice. REQUIRED INPUTS: You must pass the 'item_id' of the chosen bottle, and calculate the 'new_quantity' (the current available stock minus 1). Execute this tool before moving on to collect the user's contact information.",
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1wZjWjgX2OVKtnuipsaS7xTu-4xrJcwNexFMIkSIURcU"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wZjWjgX2OVKtnuipsaS7xTu-4xrJcwNexFMIkSIURcU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Item_ID": "={{ $fromAI('item_id') }}",
+            "Available": "={{ $fromAI('new_quantity') }}"
+          },
+          "matchingColumns": [
+            "Item_ID"
+          ],
+          "schema": [
+            {
+              "id": "Item_ID",
+              "displayName": "Item_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Brand",
+              "displayName": "Brand",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "In_Stock",
+              "displayName": "In_Stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reserved",
+              "displayName": "Reserved",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Available",
+              "displayName": "Available",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        112
+      ],
+      "id": "7a293516-41b9-4e6b-b1d6-0dbc1df26a7f",
+      "name": "GSheets_Deduct_Inventory",
+      "credentials": {
+        "googleApi": {
+          "id": "rWc0WAsTXv0IWnpy",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -544,
+        128
+      ],
+      "id": "ca26157b-7286-4394-8e7a-fb7d2c89f131",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3.6-35b-a3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        128
+      ],
+      "id": "ba7a1a12-8cf0-48eb-b1df-6b1118a26bf9",
+      "name": "Qwen3.6-35a3b",
+      "credentials": {
+        "openRouterApi": {
+          "id": "tNrVGgWM6Zizw7g6",
+          "name": "OpenRouter account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "ClubBot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GSheets_Inventory": {
+      "ai_tool": [
+        [
+          {
+            "node": "ClubBot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GCal_Availability": {
+      "ai_tool": [
+        [
+          {
+            "node": "ClubBot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GCal_Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "ClubBot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GCal_Create_VIP_Booking": {
+      "ai_tool": [
+        [
+          {
+            "node": "ClubBot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GSheets_Deduct_Inventory": {
+      "ai_tool": [
+        [
+          {
+            "node": "ClubBot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "ClubBot",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qwen3.6-35a3b": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "ClubBot",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "070d17be0055d3b3b62b3a2eade2f140673eb8884d0b21e9c00f5966ebbbc9c6"
+  }
+}
