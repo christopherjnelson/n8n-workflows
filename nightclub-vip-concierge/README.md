@@ -8,7 +8,8 @@ An autonomous, production-grade conversational AI agent built in **n8n** utilizi
 
 * **Orchestration:** n8n LangChain Agent utilizing OpenWeight LLMs (Qwen3.6-35ba3b via OpenRouter).
 * **State Management:** Window Buffer Memory bound to the chat session ID to maintain step-by-step context.
-* **Data Sources:** * **Google Sheets:** Live inventory tracking with read/write operations for stock levels.
+* **Data Sources:**
+  * **Google Sheets:** Live inventory tracking with read/write operations for stock levels.
   * **Google Calendar (Resources):** Individual VIP table calendars (`@resource.calendar.google.com`) for collision detection and booking.
   * **Google Calendar (Events):** Schedule discovery for club marketing and DJ sets.
 
