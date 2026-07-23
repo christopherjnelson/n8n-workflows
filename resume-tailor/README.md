@@ -1,3 +1,5 @@
+<img width="1731" height="639" alt="Screenshot_20260723_000747" src="https://github.com/user-attachments/assets/54a5fefc-5847-48a3-846d-826f9a864b30" />
+
 # AI-Powered Resume Builder with n8n
 
 An automated resume-generation workflow built with n8n, Firecrawl, Notion, Google Gemini, and Google Drive.
