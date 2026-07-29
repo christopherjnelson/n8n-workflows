@@ -2,19 +2,19 @@
 
 This n8n workflow powers **Ziggy**, Christopher Nelson's portfolio assistant. It
 provides separate chat and health endpoints, retrieves relevant portfolio facts
-from Supabase, maintains short conversational memory, and returns a synchronous
+from Supabase, maintains short conversational memory, and streams the agent
 response to the CMS.
 
 ## Workflow Overview
 
 ```text
-[POST Chat Webhook] → [Ziggy Agent] → [Respond to Webhook]
-                           ↑
-              ┌────────────┼────────────┐
-              │            │            │
-        [Memory]   [Portfolio Vectors]  [Gemini]
-                         ↑
-                  [BGE-M3 Embeddings]
+[POST Chat Webhook (streaming)] → [Ziggy Agent] → [Streamed response]
+                                      ↑
+                         ┌────────────┼────────────┐
+                         │            │            │
+                   [Memory]   [Portfolio Vectors]  [Gemini]
+                                    ↑
+                             [BGE-M3 Embeddings]
 
 [GET Health Webhook] → [Health Response: {"status":"online"}]
 ```
@@ -30,7 +30,8 @@ response to the CMS.
    retrieving up to eight relevant results.
 5. `OpenRouter BGE-M3` (`baai/bge-m3`) embeds the search query through an
    OpenAI-compatible credential.
-6. `Respond to Webhook` returns the agent response to the CMS.
+6. The chat webhook streams the agent's output directly to the CMS as it is
+   generated; no separate response node is required.
 7. The separate `Health` GET webhook returns `{"status":"online"}` without
    invoking the model or vector store.
 
@@ -58,4 +59,5 @@ reconnected after import.
    GET URL as the CI/CD `N8N_HEALTH_WEBHOOK`.
 6. Activate the workflow.
 7. Verify the health URL returns `{"status":"online"}`, then send a chat request
-   containing both `chatInput` and `sessionId`.
+   containing both `chatInput` and `sessionId` and confirm the client consumes
+   the streamed response.
