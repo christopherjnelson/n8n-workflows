@@ -2,7 +2,7 @@
 
 # AI-Powered Resume Builder with n8n
 
-An automated resume-generation workflow built with n8n, Firecrawl, Notion, Google Gemini, and Google Drive.
+An automated resume-generation workflow built with n8n, Firecrawl, Notion, OpenRouter, Google Gemini, and Google Drive.
 
 The workflow accepts a public job-posting URL, validates and analyzes the listing, retrieves verified professional information from Notion, generates a tailored ATS-friendly resume, converts it to PDF, and returns the completed file through an n8n form.
 
@@ -25,6 +25,9 @@ n8n Form -> Normalize Form URL -> URL Present?
                             Scrape Job Posting
                                    |
                                    v
+                      Normalize Scraped Job Content
+                                   |
+                                   v
                          Content Available?
                                    |
                                    +-> No -> Form Error
@@ -37,13 +40,16 @@ n8n Form -> Normalize Form URL -> URL Present?
                                    +-> No -> Form Error
                                       |
                                       v
-                         Retrieve Verified Notion Data
+                         Apply Candidate Profile
                                    |
                                    v
-                           Generate Tailored Resume
+                  Generate Resume with Verified Notion Data
                                    |
                                    v
                       Create Google Drive Document
+                                   |
+                                   v
+                         Apply Document Margins
                                    |
                                    v
                            Export Resume as PDF
@@ -57,14 +63,17 @@ n8n Form -> Normalize Form URL -> URL Present?
 * Single input through an authenticated n8n form
 * Missing-URL validation before scraping
 * Public job-posting scraping through Firecrawl
+* Fallback normalization across Firecrawl Markdown and description fields
 * Deterministic checks for empty or insufficient scraped content
 * AI-based job-posting validation
 * Prompt-injection boundary around scraped webpage content
 * Structured AI output using JSON Schema
 * Retrieval of verified candidate information through individual Notion tool nodes (one per database)
+* A dedicated trusted candidate-profile node for resume header details
 * ATS-focused resume tailoring
 * Guardrails against invented skills, dates, metrics, and experience
 * Automatic Google Docs creation
+* Consistent Google Docs margins before export
 * PDF export through Google Drive
 * Browser completion responses for both success and error cases
 
@@ -74,8 +83,8 @@ n8n Form -> Normalize Form URL -> URL Present?
 | ---------------- | ---------------------------------------------------- |
 | n8n              | Workflow orchestration and routing                   |
 | Firecrawl        | Job-posting scraping and Markdown extraction         |
-| Google Gemini    | Language-model access                                |
-| Gemini Flash 3.6 | Job validation and resume generation                 |
+| OpenRouter       | Language-model access                                |
+| Gemini Flash 3.6 | Job validation and resume generation through OpenRouter |
 | Notion           | Retrieval of verified professional information       |
 | Google Drive API | Google Docs creation and PDF export                  |
 | n8n Forms        | Browser-based submission, feedback, and PDF download |
@@ -115,13 +124,13 @@ The request does not continue to Firecrawl or either AI node.
 
 The normalized URL is passed to Firecrawl.
 
-Firecrawl returns the page as Markdown along with available metadata, including the resolved page URL.
+Firecrawl returns the page as Markdown along with available metadata, including the resolved page URL. The `NormalizeJobListing` node selects the longest usable value from the Markdown, metadata description, and Open Graph description fields.
 
 The workflow performs an initial deterministic content check before spending tokens on AI validation.
 
 The scraped result must:
 
-* Contain a non-empty Markdown value
+* Contain a non-empty normalized content value
 * Contain more than the configured minimum number of characters
 
 These checks are intentionally simple. Their purpose is to reject empty or obviously unusable scrape results, not to determine whether the page is truly a job posting.
@@ -195,7 +204,7 @@ Each Notion tool node is connected to a specific database, so the agent can only
 
 Scoping each tool to a single database keeps retrieval auditable and makes the workflow easy to reuse with a different Notion workspace.
 
-The Notion workspace acts as the factual source of truth for:
+The `CandidateProfile` node is the sole source for the resume header's name, location, phone number, email address, website, and LinkedIn URL. The Notion workspace acts as the factual source of truth for:
 
 * Employment history
 * Exact job titles and dates
@@ -206,7 +215,7 @@ The Notion workspace acts as the factual source of truth for:
 * Certifications
 * Accomplishments and verified metrics
 
-The agent is limited to a small number of targeted Notion tool calls and is instructed to stop retrieving once it has enough verified material to write an accurate two-page resume.
+The agent calls each relevant Notion tool at most once, uses no more than four Notion calls in total, and stops retrieving once it has enough verified material to write an accurate resume.
 
 Information that cannot be verified in Notion must not be included.
 
@@ -282,11 +291,14 @@ Education & Certifications
 
 The prompt applies the following length controls:
 
-* Professional summary: no more than three concise sentences
-* Most relevant position: no more than five bullets
-* Other positions: no more than three bullets each
-* Projects and infrastructure: no more than three bullets total
-* Education and certifications: no more than seven entries
+* Complete resume: no more than 700 words
+* Professional summary: no more than two sentences or 55 words
+* Technical skills: three or four categories and no more than 24 distinct skills
+* Professional experience: no more than four positions or ten bullets total
+* Most relevant position: no more than four bullets
+* Other positions: no more than two or three bullets each
+* Projects and independent technical work: no more than two entries or three bullets total
+* Education and credentials: no more than six completed entries
 
 Lower-value information should be omitted before the resume is allowed to exceed the intended two-page layout.
 
@@ -309,7 +321,7 @@ This allows downstream Google Drive nodes to reference the employer, title, and 
 
 The workflow creates a company-specific folder inside a configured parent Google Drive folder.
 
-The generated Markdown is uploaded through the Google Drive API as a Google Docs document.
+The generated Markdown is uploaded through the Google Drive API as a Google Docs document. A Docs API batch update then applies 0.5-inch left and right margins and 0.7-inch top and bottom margins before PDF export.
 
 The document is named using:
 
@@ -364,7 +376,7 @@ This keeps expected input and content failures visible to the user without relyi
 The workflow requires the following n8n credentials:
 
 * Firecrawl API
-* Google Gemini API
+* OpenRouter API
 * Notion OAuth2
 * Google Drive OAuth2
 
@@ -376,7 +388,7 @@ Before importing the workflow, prepare:
 
 1. An n8n instance with community-node support
 2. A Firecrawl account and API key
-3. A Google AI Studio account with an API key that has access to Gemini Flash 3.6
+3. An OpenRouter account with access to the configured Gemini Flash 3.6 model
 4. A Notion workspace containing structured professional information
 5. A Notion OAuth2 connection inside n8n with access to the required databases
 6. A Google Drive folder for generated resumes
@@ -433,14 +445,14 @@ Each Notion tool node is pointed at a specific database. Replace the placeholder
 
 Reconnect the Notion OAuth2 credential on each Notion tool node and confirm it can access the intended databases.
 
-### Google Gemini
+### OpenRouter
 
-Reconnect the Google Gemini API credential.
+Reconnect the OpenRouter API credential.
 
 The workflow currently uses:
 
 ```text
-models/gemini-3.6-flash
+google/gemini-3.6-flash
 ```
 
 Another tool-capable model may be substituted, but it should reliably support:
@@ -455,18 +467,20 @@ Another tool-capable model may be substituted, but it should reliably support:
 
 Reconnect the Firecrawl credential and confirm the scrape operation returns Markdown and metadata.
 
-### Resume agent prompt
+### Candidate profile
 
-The ResumeAgent system message contains placeholder values for the candidate's personal details:
+Update the values in the `CandidateProfile` node:
 
 * `CANDIDATE_FULL_NAME`
-* `CANDIDATE_CITY`, `CANDIDATE_STATE`
+* `CANDIDATE_LOCATION`
+* `CANDIDATE_PHONE`
 * `candidate@example.com`
-* `linkedin.com/in/candidate-profile`
+* `https://example.com`
+* `https://linkedin.com/in/candidate-profile`
 
-Replace these with the candidate's verified contact details, or leave them as placeholders and let the agent fill them from Notion.
+Replace every placeholder with the candidate's verified contact details. The resume agent treats this node as the sole source for the document header and does not retrieve replacement contact details from Notion.
 
-The output PDF filename (`YOUR_NAME_Resume.pdf`) can also be customized on the DownloadPDF node.
+The output PDF filename (`Candidate_Resume.pdf`) can also be customized on the `DownloadPDF` node.
 
 ## Importing the workflow
 
@@ -478,7 +492,7 @@ The output PDF filename (`YOUR_NAME_Resume.pdf`) can also be customized on the D
 6. Replace the placeholder Google Drive folder ID.
 7. Replace the placeholder Notion database IDs on each Notion tool node.
 8. Confirm each Notion tool node can access the intended database.
-9. Update the candidate placeholder values in the ResumeAgent prompt if desired.
+9. Replace every placeholder value in the `CandidateProfile` node.
 10. Test a valid URL through the form.
 11. Test a blank submission.
 12. Test a blocked or inaccessible page.
@@ -521,22 +535,7 @@ Before committing the n8n workflow export, remove or replace:
 * Candidate names, emails, and contact details
 * API keys, tokens, or secrets
 
-The public workflow should contain clearly labeled placeholders.
-
-Example:
-
-```json
-{
-  "credentials": {
-    "notionOAuth2Api": {
-      "id": "YOUR_NOTION_CREDENTIAL_ID",
-      "name": "Notion account"
-    }
-  }
-}
-```
-
-Never commit active secrets to the repository.
+The public workflow should contain clearly labeled placeholders. Credential bindings are intentionally omitted from the published export. Reconnect each required credential after import; never commit credential IDs or active secrets to the repository.
 
 ## Known limitations
 
@@ -547,7 +546,6 @@ The current workflow imports generated Markdown into Google Docs and exports it 
 This provides a straightforward document pipeline but offers limited control over:
 
 * Typography
-* Margins
 * Page breaks
 * Bullet spacing
 * Heading spacing
