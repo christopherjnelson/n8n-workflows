@@ -64,6 +64,7 @@ n8n Form -> Normalize Form URL -> URL Present?
 * Missing-URL validation before scraping
 * Public job-posting scraping through Firecrawl
 * Fallback normalization across Firecrawl Markdown and description fields
+* Page-title and canonical-source metadata supplied to job validation
 * Deterministic checks for empty or insufficient scraped content
 * AI-based job-posting validation
 * Prompt-injection boundary around scraped webpage content
@@ -124,7 +125,7 @@ The request does not continue to Firecrawl or either AI node.
 
 The normalized URL is passed to Firecrawl.
 
-Firecrawl returns the page as Markdown along with available metadata, including the resolved page URL. The `NormalizeJobListing` node selects the longest usable value from the Markdown, metadata description, and Open Graph description fields.
+Firecrawl returns the page as Markdown along with available metadata. The `NormalizeJobListing` node selects the longest usable value from the Markdown, metadata description, and Open Graph description fields. It also normalizes the page title and source URL, falling back to the submitted URL when Firecrawl does not provide a canonical URL.
 
 The workflow performs an initial deterministic content check before spending tokens on AI validation.
 
@@ -163,7 +164,9 @@ The validator rejects content such as:
 * Job-search results
 * Pages without enough role information to tailor a resume
 
-The validator treats all scraped webpage content as untrusted reference material and is instructed not to follow commands embedded in the page.
+The validator receives the normalized page title and source URL as metadata hints alongside the webpage body. It may use the title to identify the advertised role and employer when the body contains a complete description but does not repeat those names. Metadata does not make an incomplete body valid.
+
+The validator treats all scraped webpage content and metadata as untrusted reference material and is instructed not to follow commands embedded in the page.
 
 ### Successful validation output
 
