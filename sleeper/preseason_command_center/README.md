@@ -17,7 +17,7 @@ No Sleeper login or Sleeper credential is required.
        ↓
 [Show Browser Result]
 ```
-<img width="1833" height="554" alt="Screenshot_20260802_142051" src="https://github.com/user-attachments/assets/940cd854-82e8-4ca6-890d-17ed317ddb18" />
+<img width="1833" height="554" alt="n8n workflow canvas for the Sleeper preseason command center" src="https://github.com/user-attachments/assets/940cd854-82e8-4ca6-890d-17ed317ddb18" />
 
 ## Report Contents
 
@@ -28,8 +28,8 @@ No Sleeper login or Sleeper credential is required.
 - Associated drafts and league-scoped traded draft picks
 - Roster positions, scoring highlights, and all league settings
 
-<img width="855" height="665" alt="Screenshot_20260802_142140" src="https://github.com/user-attachments/assets/a5284c55-709e-4538-a984-d222dab829e7" />
-<img width="1023" height="912" alt="Screenshot_20260802_142236" src="https://github.com/user-attachments/assets/89f5988d-439a-4c61-ba35-56e28739c45a" />
+<img width="855" height="665" alt="Generated n8n form for username and league input" src="https://github.com/user-attachments/assets/a5284c55-709e-4538-a984-d222dab829e7" />
+<img width="1023" height="912" alt="Generated Sleeper league command center report with identifying information blurred" src="https://github.com/user-attachments/assets/89f5988d-439a-4c61-ba35-56e28739c45a" />
 
 
 
