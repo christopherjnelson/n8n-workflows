@@ -1,0 +1,321 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Sleeper Preseason League Command Center",
+        "formDescription": "Enter a public Sleeper username and league ID to generate a formatted preseason league report. No Sleeper login or credentials are required.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Sleeper Username",
+              "fieldName": "username",
+              "placeholder": "e.g. your_sleeper_username",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Sleeper League ID",
+              "fieldName": "leagueId",
+              "placeholder": "Paste the league ID from your Sleeper league URL",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Generate Command Center",
+          "path": "your-sleeper-command-center-form-path",
+          "ignoreBots": true,
+          "customCss": ":root {\n  --font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  --font-weight-normal: 400;\n  --font-weight-bold: 600;\n  --font-size-body: 14px;\n  --font-size-label: 14px;\n  --font-size-input: 15px;\n  --font-size-header: 30px;\n  --font-size-paragraph: 14px;\n  --font-size-link: 13px;\n  --font-size-error: 13px;\n  --font-size-html-h1: 30px;\n  --font-size-html-h2: 22px;\n  --font-size-html-h3: 18px;\n  --font-size-html-h4: 16px;\n  --font-size-html-h5: 14px;\n  --font-size-html-h6: 12px;\n  --font-size-subheader: 15px;\n\n  --color-background: #f4f6fb;\n  --color-test-notice-text: #92400e;\n  --color-test-notice-bg: #fff7ed;\n  --color-test-notice-border: #fed7aa;\n  --color-card-bg: #ffffff;\n  --color-card-border: #dfe3ee;\n  --color-card-shadow: rgba(49, 46, 129, 0.10);\n  --color-link: #4338ca;\n  --color-header: #1e1b4b;\n  --color-label: #312e81;\n  --color-input-border: #c7cbe0;\n  --color-input-text: #1f2937;\n  --color-focus-border: #4f46e5;\n  --color-submit-btn-bg: #312e81;\n  --color-submit-btn-text: #f8fafc;\n  --color-error: #b91c1c;\n  --color-required: #b91c1c;\n  --color-clear-button-bg: #6b7280;\n  --color-html-text: #374151;\n  --color-html-link: #4338ca;\n  --color-header-subtext: #6b7280;\n\n  --border-radius-card: 18px;\n  --border-radius-input: 10px;\n  --border-radius-clear-btn: 50%;\n  --card-border-radius: 18px;\n\n  --padding-container-top: 48px;\n  --padding-card: 32px;\n  --padding-test-notice-vertical: 12px;\n  --padding-test-notice-horizontal: 20px;\n  --margin-bottom-card: 18px;\n  --padding-form-input: 13px 14px;\n  --card-padding: 32px;\n  --card-margin-bottom: 18px;\n\n  --container-width: 640px;\n  --submit-btn-height: 50px;\n  --checkbox-size: 18px;\n\n  --box-shadow-card: 0 18px 45px var(--color-card-shadow);\n  --opacity-placeholder: 0.55;\n}\n\nbody {\n  background:\n    radial-gradient(circle at top left, rgba(79, 70, 229, 0.10), transparent 34rem),\n    linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);\n}\n\n.card {\n  text-align: left;\n  border-width: 1px;\n}\n\nh1, h2, h3, h4 {\n  letter-spacing: -0.02em;\n}\n\nbutton[type=\"submit\"] {\n  font-weight: 700;\n  letter-spacing: 0.01em;\n  box-shadow: 0 8px 20px rgba(49, 46, 129, 0.22);\n}\n\nbutton[type=\"submit\"]:hover {\n  background: #4338ca;\n}"
+        }
+      },
+      "id": "e6126acd-052e-443b-9ee6-effd54fde707",
+      "name": "Sleeper League Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        8720,
+        1392
+      ],
+      "notesInFlow": true,
+      "notes": "Use the Test Form URL while building. Publish/activate the workflow to use the Production Form URL. Authentication is intentionally disabled for this public demo form."
+    },
+    {
+      "parameters": {
+        "content": "## Public form workflow\n- Test with the Form Trigger's **Test URL**.\n- Publish/activate the workflow for the **Production URL**.\n- Anyone with the URL can submit it unless you add Form authentication.\n- Form and report share the same Sleeper-branded indigo/white theme.",
+        "height": 220,
+        "width": 480,
+        "color": 5
+      },
+      "id": "2dd10bea-be03-4dae-8b68-15405f75cccb",
+      "name": "Form Usage Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        8640,
+        1088
+      ]
+    },
+    {
+      "parameters": {
+        "usernameOrUserId": "={{ $json.username }}"
+      },
+      "id": "d61e85bd-5b07-4a7b-b70d-16a055cdc7fa",
+      "name": "Resolve Sleeper User",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        9008,
+        1392
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "league",
+        "leagueId": "={{ $('Sleeper League Form').first().json.leagueId }}"
+      },
+      "id": "c642cb6f-2517-46ff-8580-422700c71b47",
+      "name": "Get League",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        9264,
+        1392
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "leagueUser",
+        "leagueId": "={{ $('Sleeper League Form').first().json.leagueId }}"
+      },
+      "id": "a5d3646d-1bd3-4269-bea9-1de36b1a27e7",
+      "name": "Get League Users",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        9520,
+        1392
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "roster",
+        "leagueId": "={{ $('Sleeper League Form').first().json.leagueId }}"
+      },
+      "id": "f1aaa5aa-5aa5-4b65-b424-0bd3e98e28ec",
+      "name": "Get Rosters",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        9792,
+        1392
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "operation": "getManyForLeague",
+        "leagueId": "={{ $('Sleeper League Form').first().json.leagueId }}"
+      },
+      "id": "9ffb229c-fa88-4be5-9fa2-fbbf91f95c02",
+      "name": "Get League Drafts",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        10048,
+        1392
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "tradedPick",
+        "leagueId": "={{ $('Sleeper League Form').first().json.leagueId }}"
+      },
+      "id": "a7cb8603-e9c5-4ded-9fc0-41064b439024",
+      "name": "Get Traded Picks",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        10304,
+        1392
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "sport"
+      },
+      "id": "0b1b7552-c3db-4f51-b157-a12763cc3739",
+      "name": "Get NFL State",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        10560,
+        1392
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const nonEmptyItems = (nodeName) =>\n  $(nodeName)\n    .all()\n    .map((item) => item.json)\n    .filter((value) => value && typeof value === 'object' && Object.keys(value).length > 0);\n\nconst config = $('Sleeper League Form').first().json;\nconst user = nonEmptyItems('Resolve Sleeper User')[0] ?? {};\nconst league = nonEmptyItems('Get League')[0] ?? {};\nconst leagueUsers = nonEmptyItems('Get League Users');\nconst rosters = nonEmptyItems('Get Rosters');\nconst drafts = nonEmptyItems('Get League Drafts');\nconst tradedPicks = nonEmptyItems('Get Traded Picks');\nconst nflState = nonEmptyItems('Get NFL State')[0] ?? {};\n\nconst asString = (value, fallback = '—') => {\n  if (value === null || value === undefined || value === '') return fallback;\n  return String(value);\n};\n\nconst escapeHtml = (value) =>\n  asString(value, '')\n    .replaceAll('&', '&amp;')\n    .replaceAll('<', '&lt;')\n    .replaceAll('>', '&gt;')\n    .replaceAll('\"', '&quot;')\n    .replaceAll(\"'\", '&#039;');\n\nconst formatDate = (value) => {\n  if (value === null || value === undefined || value === '') return '—';\n  const numeric = Number(value);\n  const date = Number.isFinite(numeric) ? new Date(numeric) : new Date(value);\n  return Number.isNaN(date.getTime()) ? asString(value) : date.toLocaleString('en-US');\n};\n\nconst formatPoints = (base, decimal) => {\n  if (base === null || base === undefined) return '—';\n  const whole = Number(base);\n  const fraction = Number(decimal ?? 0) / 100;\n  if (!Number.isFinite(whole) || !Number.isFinite(fraction)) return asString(base);\n  return (whole + fraction).toFixed(2);\n};\n\nconst countValues = (values = []) => {\n  const counts = new Map();\n  for (const value of values) counts.set(value, (counts.get(value) ?? 0) + 1);\n  return [...counts.entries()].map(([value, count]) => (count > 1 ? `${value} ×${count}` : value));\n};\n\nconst usersById = new Map(\n  leagueUsers\n    .filter((entry) => entry.user_id !== null && entry.user_id !== undefined)\n    .map((entry) => [String(entry.user_id), entry]),\n);\n\nconst rostersById = new Map(\n  rosters\n    .filter((entry) => entry.roster_id !== null && entry.roster_id !== undefined)\n    .map((entry) => [String(entry.roster_id), entry]),\n);\n\nconst userTeamName = (leagueUser) =>\n  leagueUser?.metadata?.team_name ||\n  leagueUser?.metadata?.team_name_update ||\n  leagueUser?.display_name ||\n  'Unnamed Team';\n\nconst rosterDisplayName = (rosterId) => {\n  const roster = rostersById.get(String(rosterId));\n  if (!roster) return `Roster ${asString(rosterId)}`;\n  const owner = usersById.get(String(roster.owner_id));\n  return `${userTeamName(owner)} (Roster ${asString(rosterId)})`;\n};\n\nconst userId = user.user_id === null || user.user_id === undefined ? null : String(user.user_id);\nconst selectedRoster =\n  rosters.find(\n    (roster) =>\n      userId &&\n      (String(roster.owner_id) === userId ||\n        (Array.isArray(roster.co_owners) && roster.co_owners.map(String).includes(userId))),\n  ) ?? null;\n\nconst rosterRows = [...rosters]\n  .sort((a, b) =>\n    String(a.roster_id ?? '').localeCompare(String(b.roster_id ?? ''), undefined, { numeric: true }),\n  )\n  .map((roster) => {\n    const owner = usersById.get(String(roster.owner_id));\n    const team = userTeamName(owner);\n    const ownerName = owner?.display_name ?? (roster.owner_id ? `User ${roster.owner_id}` : 'Unassigned');\n    const settings = roster.settings ?? {};\n    const wins = settings.wins ?? 0;\n    const losses = settings.losses ?? 0;\n    const ties = settings.ties ?? 0;\n    return {\n      rosterId: asString(roster.roster_id),\n      team,\n      owner: ownerName,\n      players: Array.isArray(roster.players) ? roster.players.length : 0,\n      starters: Array.isArray(roster.starters) ? roster.starters.length : 0,\n      reserve: Array.isArray(roster.reserve) ? roster.reserve.length : 0,\n      taxi: Array.isArray(roster.taxi) ? roster.taxi.length : 0,\n      record: `${wins}-${losses}${ties ? `-${ties}` : ''}`,\n      pointsFor: formatPoints(settings.fpts, settings.fpts_decimal),\n      waiverPosition: asString(settings.waiver_position),\n      waiverBudgetUsed: asString(settings.waiver_budget_used),\n    };\n  });\n\nconst draftRows = drafts.map((draft) => ({\n  draftId: asString(draft.draft_id),\n  season: asString(draft.season),\n  status: asString(draft.status),\n  type: asString(draft.type),\n  rounds: asString(draft.settings?.rounds),\n  teams: asString(draft.settings?.teams),\n  startTime: formatDate(draft.start_time),\n}));\n\nconst tradedPickRows = tradedPicks\n  .sort((a, b) => {\n    const bySeason = String(a.season ?? '').localeCompare(String(b.season ?? ''), undefined, {\n      numeric: true,\n    });\n    if (bySeason !== 0) return bySeason;\n    return Number(a.round ?? 0) - Number(b.round ?? 0);\n  })\n  .map((pick) => ({\n    season: asString(pick.season),\n    round: asString(pick.round),\n    originalRoster: rosterDisplayName(pick.roster_id),\n    previousOwner: rosterDisplayName(pick.previous_owner_id),\n    currentOwner: rosterDisplayName(pick.owner_id),\n  }));\n\nconst rosterPositions = countValues(Array.isArray(league.roster_positions) ? league.roster_positions : []);\n\nconst leagueSettings = Object.entries(league.settings ?? {})\n  .sort(([a], [b]) => a.localeCompare(b))\n  .map(([key, value]) => ({ key, value: asString(value) }));\n\nconst scoringHighlightsKeys = [\n  'pass_yd',\n  'pass_td',\n  'pass_int',\n  'rush_yd',\n  'rush_td',\n  'rec',\n  'rec_yd',\n  'rec_td',\n  'fum_lost',\n];\nconst scoringHighlights = scoringHighlightsKeys\n  .filter((key) => Object.hasOwn(league.scoring_settings ?? {}, key))\n  .map((key) => ({ key, value: asString(league.scoring_settings[key]) }));\n\nconst generatedAt = new Date().toISOString();\nconst leagueName = league.name ?? `Sleeper League ${config.leagueId}`;\nconst avatarUrl = user.avatar\n  ? `https://sleepercdn.com/avatars/${encodeURIComponent(String(user.avatar))}`\n  : null;\n\nconst markdownTable = (headers, rows) => {\n  if (rows.length === 0) return '_No records returned._';\n  const header = `| ${headers.join(' | ')} |`;\n  const divider = `| ${headers.map(() => '---').join(' | ')} |`;\n  const body = rows.map((row) => `| ${row.map((cell) => asString(cell).replaceAll('|', '\\\\|')).join(' | ')} |`);\n  return [header, divider, ...body].join('\\n');\n};\n\nconst markdown = [\n  `# ${leagueName} — Preseason League Command Center`,\n  '',\n  `Generated: ${generatedAt}`,\n  '',\n  '## League Overview',\n  markdownTable(\n    ['Field', 'Value'],\n    [\n      ['League ID', asString(league.league_id ?? config.leagueId)],\n      ['Season', asString(league.season)],\n      ['Status', asString(league.status)],\n      ['Season Type', asString(league.season_type)],\n      ['Teams', asString(league.total_rosters ?? rosters.length)],\n      ['Previous League ID', asString(league.previous_league_id)],\n      ['Primary Draft ID', asString(league.draft_id)],\n    ],\n  ),\n  '',\n  '## Current NFL State',\n  markdownTable(\n    ['Field', 'Value'],\n    [\n      ['Season', asString(nflState.season)],\n      ['Season Type', asString(nflState.season_type)],\n      ['Week', asString(nflState.week)],\n      ['Display Week', asString(nflState.display_week)],\n      ['League Season', asString(nflState.league_season)],\n      ['Previous Season', asString(nflState.previous_season)],\n    ],\n  ),\n  '',\n  '## Selected Sleeper User',\n  markdownTable(\n    ['Field', 'Value'],\n    [\n      ['Display Name', asString(user.display_name)],\n      ['Username', asString(user.username)],\n      ['User ID', asString(user.user_id)],\n      ['League Team', selectedRoster ? userTeamName(usersById.get(String(selectedRoster.owner_id))) : 'No matching roster'],\n      ['Roster ID', selectedRoster ? asString(selectedRoster.roster_id) : '—'],\n      ['Avatar URL', avatarUrl ?? '—'],\n    ],\n  ),\n  '',\n  '## Teams and Rosters',\n  markdownTable(\n    ['Roster', 'Team', 'Owner', 'Players', 'Starters', 'Reserve', 'Taxi', 'Record', 'Points For'],\n    rosterRows.map((row) => [\n      row.rosterId,\n      row.team,\n      row.owner,\n      row.players,\n      row.starters,\n      row.reserve,\n      row.taxi,\n      row.record,\n      row.pointsFor,\n    ]),\n  ),\n  '',\n  '## Drafts',\n  markdownTable(\n    ['Season', 'Status', 'Type', 'Rounds', 'Teams', 'Start Time', 'Draft ID'],\n    draftRows.map((row) => [\n      row.season,\n      row.status,\n      row.type,\n      row.rounds,\n      row.teams,\n      row.startTime,\n      row.draftId,\n    ]),\n  ),\n  '',\n  '## Traded Draft Picks',\n  markdownTable(\n    ['Season', 'Round', 'Original Roster', 'Previous Owner', 'Current Owner'],\n    tradedPickRows.map((row) => [\n      row.season,\n      row.round,\n      row.originalRoster,\n      row.previousOwner,\n      row.currentOwner,\n    ]),\n  ),\n  '',\n  '## Roster Sleeper League Form',\n  rosterPositions.length ? rosterPositions.join(', ') : '_No roster positions returned._',\n  '',\n  '## Scoring Highlights',\n  markdownTable(\n    ['Setting', 'Value'],\n    scoringHighlights.map((row) => [row.key, row.value]),\n  ),\n  '',\n  '## League Settings',\n  markdownTable(\n    ['Setting', 'Value'],\n    leagueSettings.map((row) => [row.key, row.value]),\n  ),\n  '',\n  '> Generated with the unofficial n8n-nodes-sleeper community node. Sleeper data is public and read-only.',\n].join('\\n');\n\nconst htmlTable = (headers, rows) => {\n  if (rows.length === 0) return '<p class=\"empty\">No records returned.</p>';\n  return `<div class=\"table-wrap\"><table><thead><tr>${headers\n    .map((header) => `<th>${escapeHtml(header)}</th>`)\n    .join('')}</tr></thead><tbody>${rows\n    .map(\n      (row) =>\n        `<tr>${row.map((cell) => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`,\n    )\n    .join('')}</tbody></table></div>`;\n};\n\nconst html = `<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>${escapeHtml(leagueName)} — Preseason League Command Center</title>\n<style>\n:root{color-scheme:light;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}\n*{box-sizing:border-box}\nbody{\n  margin:0;\n  background:\n    radial-gradient(circle at top left,rgba(79,70,229,.10),transparent 34rem),\n    linear-gradient(180deg,#f8fafc 0%,#eef2ff 100%);\n  color:#1f2937;\n}\nmain{max-width:1200px;margin:0 auto;padding:48px 20px 72px}\n.hero{\n  background:linear-gradient(135deg,#312e81 0%,#4338ca 100%);\n  color:#f8fafc;\n  border:1px solid rgba(255,255,255,.18);\n  border-radius:20px;\n  padding:30px;\n  margin-bottom:22px;\n  box-shadow:0 18px 45px rgba(49,46,129,.18);\n}\nh1{margin:0 0 8px;font-size:clamp(1.8rem,4vw,2.7rem);letter-spacing:-.03em}\nh2{margin:32px 0 12px;font-size:1.25rem;color:#1e1b4b;letter-spacing:-.02em}\n.meta{color:#e0e7ff}\n.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}\n.card{\n  background:#ffffff;\n  border:1px solid #dfe3ee;\n  border-radius:16px;\n  padding:16px;\n  box-shadow:0 10px 28px rgba(49,46,129,.07);\n}\n.card span{\n  display:block;\n  color:#6b7280;\n  font-size:.78rem;\n  text-transform:uppercase;\n  letter-spacing:.07em;\n}\n.card strong{display:block;margin-top:6px;font-size:1.15rem;color:#312e81}\n.table-wrap{\n  overflow:auto;\n  border:1px solid #dfe3ee;\n  border-radius:16px;\n  background:#ffffff;\n  box-shadow:0 10px 28px rgba(49,46,129,.06);\n}\ntable{width:100%;border-collapse:collapse;background:#ffffff}\nth,td{padding:11px 13px;border-bottom:1px solid #e5e7eb;text-align:left;white-space:nowrap}\nth{\n  background:#eef2ff;\n  color:#312e81;\n  font-size:.76rem;\n  text-transform:uppercase;\n  letter-spacing:.06em;\n}\ntr:last-child td{border-bottom:0}\ntr:hover td{background:#fafaff}\n.pills{display:flex;flex-wrap:wrap;gap:8px}\n.pill{\n  background:#eef2ff;\n  color:#312e81;\n  border:1px solid #c7d2fe;\n  border-radius:999px;\n  padding:7px 11px;\n  font-weight:600;\n}\n.empty{color:#6b7280;font-style:italic}\nfooter{margin-top:38px;color:#6b7280;font-size:.85rem}\n@media (max-width:640px){\n  main{padding:24px 12px 48px}\n  .hero{padding:22px}\n  th,td{padding:9px 10px}\n}\n</style>\n</head>\n<body><main>\n<section class=\"hero\">\n<h1>${escapeHtml(leagueName)}</h1>\n<p class=\"meta\">Preseason League Command Center · Generated ${escapeHtml(generatedAt)}</p>\n</section>\n<section class=\"cards\">\n<div class=\"card\"><span>Season</span><strong>${escapeHtml(league.season)}</strong></div>\n<div class=\"card\"><span>League Status</span><strong>${escapeHtml(league.status)}</strong></div>\n<div class=\"card\"><span>Teams</span><strong>${escapeHtml(league.total_rosters ?? rosters.length)}</strong></div>\n<div class=\"card\"><span>NFL Week</span><strong>${escapeHtml(nflState.week)}</strong></div>\n<div class=\"card\"><span>Drafts</span><strong>${escapeHtml(drafts.length)}</strong></div>\n<div class=\"card\"><span>Traded Picks</span><strong>${escapeHtml(tradedPicks.length)}</strong></div>\n</section>\n<h2>Selected Sleeper User</h2>\n${htmlTable(\n  ['Display Name', 'Username', 'User ID', 'League Team', 'Roster ID'],\n  [[\n    user.display_name,\n    user.username,\n    user.user_id,\n    selectedRoster ? userTeamName(usersById.get(String(selectedRoster.owner_id))) : 'No matching roster',\n    selectedRoster?.roster_id,\n  ]],\n)}\n<h2>Teams and Rosters</h2>\n${htmlTable(\n  ['Roster', 'Team', 'Owner', 'Players', 'Starters', 'Reserve', 'Taxi', 'Record', 'Points For'],\n  rosterRows.map((row) => [\n    row.rosterId,\n    row.team,\n    row.owner,\n    row.players,\n    row.starters,\n    row.reserve,\n    row.taxi,\n    row.record,\n    row.pointsFor,\n  ]),\n)}\n<h2>Drafts</h2>\n${htmlTable(\n  ['Season', 'Status', 'Type', 'Rounds', 'Teams', 'Start Time', 'Draft ID'],\n  draftRows.map((row) => [\n    row.season,\n    row.status,\n    row.type,\n    row.rounds,\n    row.teams,\n    row.startTime,\n    row.draftId,\n  ]),\n)}\n<h2>Traded Draft Picks</h2>\n${htmlTable(\n  ['Season', 'Round', 'Original Roster', 'Previous Owner', 'Current Owner'],\n  tradedPickRows.map((row) => [\n    row.season,\n    row.round,\n    row.originalRoster,\n    row.previousOwner,\n    row.currentOwner,\n  ]),\n)}\n<h2>Roster Sleeper League Form</h2>\n<div class=\"pills\">${rosterPositions.map((position) => `<span class=\"pill\">${escapeHtml(position)}</span>`).join('')}</div>\n<h2>Scoring Highlights</h2>\n${htmlTable(['Setting', 'Value'], scoringHighlights.map((row) => [row.key, row.value]))}\n<h2>League Settings</h2>\n${htmlTable(['Setting', 'Value'], leagueSettings.map((row) => [row.key, row.value]))}\n<footer>Generated with the unofficial n8n-nodes-sleeper community node. Sleeper data is public and read-only.</footer>\n</main></body></html>`;\n\nconst safeName = String(leagueName)\n  .toLowerCase()\n  .replace(/[^a-z0-9]+/g, '-')\n  .replace(/^-+|-+$/g, '')\n  .slice(0, 60) || 'sleeper-league';\n\nreturn [\n  {\n    json: {\n      reportTitle: `${leagueName} — Preseason League Command Center`,\n      generatedAt,\n      filename: `${safeName}-preseason-command-center.html`,\n      summary: {\n        leagueId: asString(league.league_id ?? config.leagueId),\n        leagueName,\n        season: asString(league.season),\n        leagueStatus: asString(league.status),\n        nflWeek: asString(nflState.week),\n        leagueUsers: leagueUsers.length,\n        rosters: rosters.length,\n        drafts: drafts.length,\n        tradedPicks: tradedPicks.length,\n        selectedUserId: asString(user.user_id),\n        selectedRosterId: selectedRoster ? asString(selectedRoster.roster_id) : null,\n      },\n      markdown,\n      html,\n    },\n  },\n];"
+      },
+      "id": "a4d6ce55-f618-4d9b-9662-6bbd644d1e8f",
+      "name": "Build Command Center Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        10832,
+        1392
+      ],
+      "notesInFlow": true,
+      "notes": "Returns one item containing a summary object plus Markdown and self-contained HTML."
+    },
+    {
+      "parameters": {
+        "content": "## Browser output\nThe Code node builds the report and **Show Command Center** returns it as a formatted web page to the person who submitted the form.",
+        "width": 440,
+        "color": 4
+      },
+      "id": "99a97ade-f72c-40b4-b8ba-3f447daae459",
+      "name": "Browser Output Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        10912,
+        1136
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "respondWith": "showText",
+        "responseText": "={{ $json.html }}"
+      },
+      "id": "941ba583-7409-486f-871b-7c4efa8c4a6b",
+      "name": "Show Command Center",
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        11312,
+        1392
+      ],
+      "notesInFlow": true,
+      "notes": "Renders the self-contained HTML report in the submitter's browser."
+    }
+  ],
+  "connections": {
+    "Sleeper League Form": {
+      "main": [
+        [
+          {
+            "node": "Resolve Sleeper User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolve Sleeper User": {
+      "main": [
+        [
+          {
+            "node": "Get League",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get League": {
+      "main": [
+        [
+          {
+            "node": "Get League Users",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get League Users": {
+      "main": [
+        [
+          {
+            "node": "Get Rosters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Rosters": {
+      "main": [
+        [
+          {
+            "node": "Get League Drafts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get League Drafts": {
+      "main": [
+        [
+          {
+            "node": "Get Traded Picks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Traded Picks": {
+      "main": [
+        [
+          {
+            "node": "Get NFL State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get NFL State": {
+      "main": [
+        [
+          {
+            "node": "Build Command Center Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Command Center Report": {
+      "main": [
+        [
+          {
+            "node": "Show Command Center",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": ""
+  }
+}

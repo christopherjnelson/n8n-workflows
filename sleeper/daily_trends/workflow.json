@@ -1,0 +1,249 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Setup\n1. Install `n8n-nodes-sleeper`.\n2. In Discord, create an incoming webhook for the channel.\n3. Open **Send Digest to Discord** and create/select a **Discord Webhook API** credential using that URL.\n4. Run **Test Workflow Manually**.\n5. Publish/activate the workflow when ready for the daily schedule.\n\nThe workflow requests the active NFL player map once per run to turn player IDs into names. Keep the schedule daily, matching Sleeper's player-data guidance.",
+        "height": 300,
+        "width": 560,
+        "color": 5
+      },
+      "id": "1641a85a-3dab-415a-a6dd-d57030ba3822",
+      "name": "Setup Instructions",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "4156582b-b6c3-4091-b398-94b509d5e7ed",
+      "name": "Test Workflow Manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        112,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        }
+      },
+      "id": "72330d73-d0e9-44e7-9dd1-dccab6be9b23",
+      "name": "Daily at 9 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        112,
+        528
+      ],
+      "notesInFlow": true,
+      "notes": "Runs at 9:00 AM in the workflow timezone. The workflow imports inactive."
+    },
+    {
+      "parameters": {
+        "resource": "player",
+        "operation": "getTrending",
+        "resultLimit": 10
+      },
+      "id": "c44e73ba-663a-4104-9058-a5c44f5bd42c",
+      "name": "Get Trending Adds",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        400,
+        448
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "player",
+        "operation": "getTrending",
+        "trendType": "drop",
+        "resultLimit": 10
+      },
+      "id": "94e2bb2d-d2ca-4bae-8667-0ea89977efd7",
+      "name": "Get Trending Drops",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        688,
+        448
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "player"
+      },
+      "id": "bbc21206-500c-4dc8-83d8-5df585981f8a",
+      "name": "Get Active Player Map",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        960,
+        448
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "notesInFlow": true,
+      "notes": "Retrieves the active player map once per run for ID-to-name enrichment."
+    },
+    {
+      "parameters": {
+        "jsCode": "const adds = $('Get Trending Adds')\n  .all()\n  .map((item) => item.json)\n  .filter((item) => item && item.player_id);\n\nconst drops = $('Get Trending Drops')\n  .all()\n  .map((item) => item.json)\n  .filter((item) => item && item.player_id);\n\nconst playerMap = $('Get Active Player Map').first().json ?? {};\n\nconst safe = (value, fallback = 'Unknown') => {\n  if (value === null || value === undefined || value === '') return fallback;\n  return String(value)\n    .replaceAll('@', '@\\u200b')\n    .replaceAll('`', 'ˋ')\n    .replaceAll('*', '∗')\n    .replaceAll('_', '﹍');\n};\n\nconst playerLabel = (playerId) => {\n  const player = playerMap[playerId] ?? {};\n  const fullName =\n    player.full_name ||\n    [player.first_name, player.last_name].filter(Boolean).join(' ') ||\n    playerId;\n\n  const details = [player.position, player.team].filter(Boolean).join(' · ');\n  const injury = player.injury_status ? ` · ${player.injury_status}` : '';\n\n  return {\n    name: safe(fullName, playerId),\n    details: details ? ` (${safe(details)}${safe(injury, '')})` : '',\n  };\n};\n\nconst makeLines = (records, symbol) => {\n  if (!records.length) return '_No trending players returned for this period._';\n\n  return records\n    .slice(0, 10)\n    .map((record, index) => {\n      const player = playerLabel(String(record.player_id));\n      return `${index + 1}. ${symbol} **${player.name}**${player.details} — ${Number(record.count ?? 0).toLocaleString('en-US')}`;\n    })\n    .join('\\n');\n};\n\nconst generatedAt = new Date().toISOString();\n\nreturn [\n  {\n    json: {\n      content:\n        '🏈 **Sleeper Fantasy Football Trending Digest**\\n' +\n        'Top adds and drops over the last 24 hours. Trending data provided by Sleeper.',\n      addsDescription: makeLines(adds, '➕'),\n      dropsDescription: makeLines(drops, '➖'),\n      generatedAt,\n      summary: {\n        addsReturned: adds.length,\n        dropsReturned: drops.length,\n        playerRecordsAvailable: Object.keys(playerMap).length,\n      },\n    },\n  },\n];"
+      },
+      "id": "c6d0e618-2d57-4212-bb40-407628c772e2",
+      "name": "Build Discord Digest",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        448
+      ],
+      "notesInFlow": true,
+      "notes": "Builds two compact Discord embed descriptions and prevents accidental @ mentions from player data."
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "={{ $json.content }}",
+        "options": {
+          "flags": [
+            "SUPPRESS_NOTIFICATIONS"
+          ],
+          "username": "Sleeper Trends",
+          "wait": true
+        },
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.addsDescription }}",
+              "color": "#22c55e",
+              "timestamp": "={{ $json.generatedAt }}",
+              "title": "📈 Trending Adds"
+            },
+            {
+              "description": "={{ $json.dropsDescription }}",
+              "color": "#ef4444",
+              "timestamp": "={{ $json.generatedAt }}",
+              "title": "📉 Trending Drops"
+            }
+          ]
+        }
+      },
+      "id": "bbadb57b-d0af-4fd4-abb9-2270045b23af",
+      "name": "Send Digest to Discord",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        448
+      ],
+      "notesInFlow": true,
+      "credentials": {},
+      "notes": "Create/select a Discord Webhook API credential here. The exported workflow intentionally contains no webhook URL or credential binding."
+    },
+    {
+      "parameters": {
+        "content": "## Discord output\nThe webhook posts one message with two embeds:\n- top 10 trending adds\n- top 10 trending drops\n\nThe message suppresses push notifications and includes the required Sleeper attribution.",
+        "height": 210,
+        "width": 460,
+        "color": 4
+      },
+      "id": "129fc359-cff9-4994-aae0-e7a055b88d4f",
+      "name": "Discord Output Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        112
+      ]
+    }
+  ],
+  "connections": {
+    "Test Workflow Manually": {
+      "main": [
+        [
+          {
+            "node": "Get Trending Adds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily at 9 AM": {
+      "main": [
+        [
+          {
+            "node": "Get Trending Adds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Trending Adds": {
+      "main": [
+        [
+          {
+            "node": "Get Trending Drops",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Trending Drops": {
+      "main": [
+        [
+          {
+            "node": "Get Active Player Map",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Active Player Map": {
+      "main": [
+        [
+          {
+            "node": "Build Discord Digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Discord Digest": {
+      "main": [
+        [
+          {
+            "node": "Send Digest to Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": ""
+  }
+}
