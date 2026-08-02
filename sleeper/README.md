@@ -26,6 +26,10 @@ does not perform hidden joins or enrichment, and empty API arrays remain empty.
 Usernames may change, while returned user, league, roster, player, and draft IDs
 must be treated as opaque strings.
 
+Install package: n8n-nodes-sleeper
+npm: https://www.npmjs.com/package/n8n-nodes-sleeper
+
+
 ## Data and Attribution
 
 Sleeper exposes the data used here publicly, but importing and running a
