@@ -19,7 +19,7 @@ ten most-dropped NFL players over the previous 24 hours. It runs manually or at
              ↓
     [Send to Discord]
 ```
-<img width="1691" height="651" alt="Screenshot_20260802_141800" src="https://github.com/user-attachments/assets/7119b573-a959-420b-ab84-bd9234fd7737" />
+<img width="1691" height="651" alt="n8n workflow canvas for the Sleeper daily trends" src="https://github.com/user-attachments/assets/7119b573-a959-420b-ab84-bd9234fd7737" />
 
 ## How It Works
 
@@ -31,7 +31,7 @@ ten most-dropped NFL players over the previous 24 hours. It runs manually or at
    includes the required Sleeper attribution.
 5. Sends the digest through a Discord incoming webhook.
 
-<img width="639" height="737" alt="Screenshot_20260802_132506" src="https://github.com/user-attachments/assets/b6b85152-a741-4c03-ada9-6b97586c1358" />
+<img width="639" height="737" alt="Discord message containing Sleeper trending adds and drops" src="https://github.com/user-attachments/assets/b6b85152-a741-4c03-ada9-6b97586c1358" />
 
 
 The player operation returns raw Sleeper IDs and counts, so the separate player
