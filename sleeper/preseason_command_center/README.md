@@ -45,7 +45,7 @@ strings throughout the workflow.
 - No n8n or Sleeper credential
 
 The custom node is unofficial, read-only, and currently released as the
-`0.1.0` community-testing prerelease. Sleeper data is public, but the generated
+`0.1.1` community-testing prerelease under the npm `next` tag. Sleeper data is public, but the generated
 report includes usernames, display names, user IDs, league settings, and roster
 details. The form is intentionally unauthenticated, so anyone with its URL can
 submit requests and view the generated response. Add n8n form authentication
@@ -53,7 +53,7 @@ before publishing if that exposure is not appropriate.
 
 ## Import and Configuration
 
-1. Install the custom node using its
+1. Install `n8n-nodes-sleeper@next` (currently `0.1.1`) using its
    [installation guide](https://github.com/christopherjnelson/n8n-nodes-sleeper#installation).
 2. Import [workflow.json](./workflow.json) into n8n.
 3. Open **Sleeper League Form** and replace

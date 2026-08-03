@@ -46,11 +46,12 @@ replace that lookup with an external cache.
 - A Discord incoming webhook and n8n **Discord Webhook API** credential
 
 Sleeper API access itself needs no credential. The custom node is unofficial,
-read-only, and currently released as the `0.1.0` community-testing prerelease.
+read-only, and currently released as the `0.1.1` community-testing prerelease under
+the npm `next` tag.
 
 ## Import and Configuration
 
-1. Install the custom node using its
+1. Install `n8n-nodes-sleeper@next` (currently `0.1.1`) using its
    [installation guide](https://github.com/christopherjnelson/n8n-nodes-sleeper#installation).
 2. Import [workflow.json](./workflow.json) into n8n.
 3. Create or select a Discord Webhook API credential on **Send Digest to

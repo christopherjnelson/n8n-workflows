@@ -14,10 +14,12 @@ community node and do not require a Sleeper login or Sleeper credential.
 
 ## Community Node Requirements
 
-The workflows use package `n8n-nodes-sleeper` version `0.1.0`, currently a
-community-testing prerelease. Install it through **Settings → Community Nodes**
-on a supported self-hosted n8n instance, or follow the package repository's
-[installation instructions](https://github.com/christopherjnelson/n8n-nodes-sleeper#installation).
+The workflows use package `n8n-nodes-sleeper` version `0.1.1`, currently a
+community-testing prerelease. Install `n8n-nodes-sleeper@next` (currently `0.1.1`)
+or pin `n8n-nodes-sleeper@0.1.1` on a supported self-hosted n8n instance. The
+unqualified package name still resolves through `latest` to `0.1.0`. See the package
+repository's [installation instructions](https://github.com/christopherjnelson/n8n-nodes-sleeper#installation)
+and [community-testing guide](https://github.com/christopherjnelson/n8n-nodes-sleeper/blob/main/docs/community-testing.md).
 The package README documents Node.js 22.22.0 or newer and n8n 2.32.7 as its
 tested environment. n8n Cloud availability is not implied.
 
@@ -26,7 +28,7 @@ does not perform hidden joins or enrichment, and empty API arrays remain empty.
 Usernames may change, while returned user, league, roster, player, and draft IDs
 must be treated as opaque strings.
 
-Install package: n8n-nodes-sleeper
+Install package for these examples: n8n-nodes-sleeper@next
 npm: https://www.npmjs.com/package/n8n-nodes-sleeper
 
 
