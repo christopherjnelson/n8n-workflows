@@ -1,4 +1,4 @@
-# LLM Assistant — Ask
+# Discord Ask Assistant
 
 A compact authenticated Discord-oriented question-answering endpoint. It accepts
 a prompt, runs an AI agent backed by an OpenRouter chat model and SearXNG search,
@@ -13,7 +13,7 @@ public use.
 ## Setup
 
 1. Import [workflow.json](./workflow.json).
-2. Replace `your-llm-assistant-ask-webhook-path` with a unique webhook path.
+2. Replace `your-discord-ask-assistant-webhook-path` with a unique webhook path.
 3. Attach an HTTP Header Auth credential to **Webhook**.
 4. Attach an OpenRouter credential to **OpenRouter Chat Model**.
 5. Configure the SearXNG credential/base URL on **SearXNG**.

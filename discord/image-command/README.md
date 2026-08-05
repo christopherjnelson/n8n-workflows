@@ -1,7 +1,7 @@
-# Discord Image Command
+# Discord — Image Command
 
 An authenticated POST webhook that normalizes a Discord image request, calls the
-reusable **Capability - Generate Image** workflow, and returns the generated file
+reusable **Discord — Generate Image Capability** workflow, and returns the generated file
 as a binary attachment response.
 
 ## Request contract
@@ -12,7 +12,7 @@ Send JSON with `prompt` and optional `aspect`, `requestedBy`, and
 
 ## Setup
 
-1. Import the [Generate Image Capability](../capability_generate_image/workflow.json)
+1. Import the [Generate Image Capability](../generate-image-capability/workflow.json)
    and configure its OpenRouter credential.
 2. Import [workflow.json](./workflow.json).
 3. In **Call 'Capability - Generate Image'**, replace

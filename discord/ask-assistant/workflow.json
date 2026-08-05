@@ -20,7 +20,7 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "your-llm-assistant-ask-webhook-path",
+        "path": "your-discord-ask-assistant-webhook-path",
         "authentication": "headerAuth",
         "responseMode": "responseNode",
         "options": {}

@@ -9,13 +9,14 @@ below, and deliver n8n's responses back to Discord.
 
 | Workflow | Export | Setup guide | Purpose |
 | --- | --- | --- | --- |
-| Generate Image Capability | [Export](./capability_generate_image/workflow.json) | [Setup guide](./capability_generate_image/README.md) | Reusable OpenRouter image-generation sub-workflow that returns binary image data. |
-| Image Command | [Export](./image_command/workflow.json) | [Setup guide](./image_command/README.md) | Authenticated webhook adapter for a Discord image command. |
-| LLM Assistant — Ask | [Export](./llm_assistant_ask/workflow.json) | [Setup guide](./llm_assistant_ask/README.md) | Small authenticated question-answering endpoint with web search. |
-| LLM Assistant — Dynamic | [Export](./llm_assistant_dynamic/workflow.json) | [Setup guide](./llm_assistant_dynamic/README.md) | Context-aware Discord assistant with search, scraping, and PostgreSQL memory. |
+| Discord — Ask Assistant | [Export](./ask-assistant/workflow.json) | [Setup guide](./ask-assistant/README.md) | Small authenticated question-answering endpoint with web search. |
+| Discord — Contextual Assistant | [Export](./contextual-assistant/workflow.json) | [Setup guide](./contextual-assistant/README.md) | Context-aware Discord assistant with search, scraping, and PostgreSQL memory. |
+| Discord — Generate Image Capability | [Export](./generate-image-capability/workflow.json) | [Setup guide](./generate-image-capability/README.md) | Reusable OpenRouter image-generation sub-workflow that returns binary image data. |
+| Discord — Image Command | [Export](./image-command/workflow.json) | [Setup guide](./image-command/README.md) | Authenticated webhook adapter for a Discord image command. |
 
-The private shared Error Workflow from the source instance is intentionally not
-published because it contains only instance-specific notification plumbing.
+The private `Discord — Workflow Error Alerts` workflow from the source instance
+is intentionally not published because it contains only instance-specific
+notification plumbing.
 
 ## Security
 

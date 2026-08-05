@@ -1,4 +1,4 @@
-# Sleeper Multiverse — Discord Weekly Luck Index
+# Sleeper — Multiverse Luck Index
 
 This scheduled workflow replays every team against every other score from a
 Sleeper league week. It compares each team's all-play win rate with the real

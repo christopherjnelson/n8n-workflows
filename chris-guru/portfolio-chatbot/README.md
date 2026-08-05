@@ -1,4 +1,4 @@
-# Portfolio Chatbot Workflow
+# Portfolio — Chatbot
 
 This n8n workflow powers **Ziggy**, Christopher Nelson's portfolio assistant. It
 provides separate chat and health endpoints, retrieves relevant portfolio facts

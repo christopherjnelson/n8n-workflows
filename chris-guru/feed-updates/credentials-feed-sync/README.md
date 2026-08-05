@@ -1,4 +1,4 @@
-# Credentials Update Workflow
+# Portfolio Credentials Feed Sync
 
 This n8n workflow parses, formats, and publishes certified learning and credential achievements from **Credly** and **Microsoft Learning** directly into Christopher Nelson's autonomous portfolio timeline database.
 

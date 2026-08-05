@@ -1,4 +1,4 @@
-# GitHub Update Workflow (Webhooks -> Portfolio)
+# Portfolio GitHub Feed Sync
 
 This n8n workflow listens to live **GitHub Webhook push events** from Christopher Nelson's portfolios/repositories, summarizes multiple or single commit details into context-aware updates via an LLM, and inserts them onto the website's live Supabase timeline database in real-time.
 

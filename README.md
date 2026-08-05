@@ -19,6 +19,15 @@ drift out of date.
 Each collection has an inventory README, and each workflow directory contains
 one sanitized `workflow.json` export plus its own setup guide.
 
+## Naming Convention
+
+- Live n8n workflows use `Domain — Purpose`, such as
+  `Sleeper — Daily Trends Digest`.
+- Repository collection and workflow directories use lowercase `kebab-case`,
+  such as `sleeper/daily-trends`.
+- Workflow names describe the stable outcome, not temporary status, node
+  implementation, or activation state.
+
 ## Security Policy
 
 Published exports must not contain credential bindings; API keys; OAuth tokens;

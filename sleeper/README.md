@@ -9,10 +9,10 @@ community node and do not require a Sleeper login or Sleeper credential.
 
 | Workflow | Export | Setup guide | Purpose |
 | --- | --- | --- | --- |
-| Bench Court | [Export](./bench_court/workflow.json) | [Setup guide](./bench_court/README.md) | Finds optimal legal weekly lineups, bench blunders, lineup efficiency, and results that could have flipped. |
-| Daily Trends | [Export](./daily_trends/workflow.json) | [Setup guide](./daily_trends/README.md) | Posts the top ten player adds and drops from the previous 24 hours to Discord each morning. |
-| Multiverse Luck Index | [Export](./multiverse_luck_index/workflow.json) | [Setup guide](./multiverse_luck_index/README.md) | Replays each weekly score against every opponent and posts a Discord luck index. |
-| Preseason Command Center | [Export](./preseason_command_center/workflow.json) | [Setup guide](./preseason_command_center/README.md) | Accepts a public Sleeper username and league ID, then renders a browser-based league, roster, draft, and scoring report. |
+| Sleeper — Bench Court | [Export](./bench-court/workflow.json) | [Setup guide](./bench-court/README.md) | Finds optimal legal weekly lineups, bench blunders, lineup efficiency, and results that could have flipped. |
+| Sleeper — Daily Trends Digest | [Export](./daily-trends/workflow.json) | [Setup guide](./daily-trends/README.md) | Posts the top ten player adds and drops from the previous 24 hours to Discord each morning. |
+| Sleeper — Multiverse Luck Index | [Export](./multiverse-luck-index/workflow.json) | [Setup guide](./multiverse-luck-index/README.md) | Replays each weekly score against every opponent and posts a Discord luck index. |
+| Sleeper — Preseason Command Center | [Export](./preseason-command-center/workflow.json) | [Setup guide](./preseason-command-center/README.md) | Accepts a public Sleeper username and league ID, then renders a browser-based league, roster, draft, and scoring report. |
 
 ## Community Node Requirements
 
@@ -50,16 +50,16 @@ player map per run and uses it only to resolve the trending player IDs.
 ```text
 sleeper/
 ├── README.md
-├── bench_court/
+├── bench-court/
 │   ├── README.md
 │   └── workflow.json
-├── daily_trends/
+├── daily-trends/
 │   ├── README.md
 │   └── workflow.json
-├── multiverse_luck_index/
+├── multiverse-luck-index/
 │   ├── README.md
 │   └── workflow.json
-└── preseason_command_center/
+└── preseason-command-center/
     ├── README.md
     └── workflow.json
 ```

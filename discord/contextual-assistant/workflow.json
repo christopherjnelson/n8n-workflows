@@ -3,7 +3,7 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "your-llm-assistant-dynamic-webhook-path",
+        "path": "your-discord-contextual-assistant-webhook-path",
         "authentication": "headerAuth",
         "responseMode": "responseNode",
         "options": {}

@@ -1,4 +1,4 @@
-# Daily Sleeper Trends Workflow
+# Sleeper Daily Trends Digest
 
 This n8n workflow publishes a daily Discord digest of the ten most-added and
 ten most-dropped NFL players over the previous 24 hours. It runs manually or at

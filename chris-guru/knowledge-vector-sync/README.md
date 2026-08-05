@@ -1,4 +1,4 @@
-# Knowledge Vectors Workflow
+# Portfolio Knowledge Vector Sync
 
 This n8n workflow synchronizes Christopher Nelson's public portfolio content
 from Notion into the `knowledge_vectors_v2` Supabase vector table used by Ziggy.

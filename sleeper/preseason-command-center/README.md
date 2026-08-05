@@ -1,4 +1,4 @@
-# Sleeper Preseason Command Center Workflow
+# Sleeper — Preseason Command Center
 
 This n8n form workflow accepts a public Sleeper username and league ID, queries
 the league's public data, and renders a browser-based preseason command center.

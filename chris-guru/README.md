@@ -9,27 +9,27 @@ sanitized n8n exports and setup instructions.
 
 | Workflow | Export | Setup guide | Purpose |
 | --- | --- | --- | --- |
-| Credentials Update | [Export](./feed_updates/credentials_update/workflow.json) | [Setup guide](./feed_updates/credentials_update/README.md) | Polls Credly and Microsoft Learn, publishes new achievements to Supabase, and optionally posts them to LinkedIn. |
-| GitHub Update | [Export](./feed_updates/github_update/workflow.json) | [Setup guide](./feed_updates/github_update/README.md) | Summarizes GitHub push events and publishes portfolio feed entries to Supabase. |
-| Knowledge Vectors | [Export](./knowledge_vectors/workflow.json) | [Setup guide](./knowledge_vectors/README.md) | Synchronizes public portfolio content from Notion into the Supabase vector knowledge base. |
-| Portfolio Chatbot | [Export](./portfolio_chatbot/workflow.json) | [Setup guide](./portfolio_chatbot/README.md) | Serves Ziggy's chat and health webhooks and answers questions using the vector knowledge base. |
+| Portfolio — Credentials Feed Sync | [Export](./feed-updates/credentials-feed-sync/workflow.json) | [Setup guide](./feed-updates/credentials-feed-sync/README.md) | Polls Credly and Microsoft Learn, publishes new achievements to Supabase, and optionally posts them to LinkedIn. |
+| Portfolio — GitHub Feed Sync | [Export](./feed-updates/github-feed-sync/workflow.json) | [Setup guide](./feed-updates/github-feed-sync/README.md) | Summarizes GitHub push events and publishes portfolio feed entries to Supabase. |
+| Portfolio — Knowledge Vector Sync | [Export](./knowledge-vector-sync/workflow.json) | [Setup guide](./knowledge-vector-sync/README.md) | Synchronizes public portfolio content from Notion into the Supabase vector knowledge base. |
+| Portfolio — Chatbot | [Export](./portfolio-chatbot/workflow.json) | [Setup guide](./portfolio-chatbot/README.md) | Serves Ziggy's chat and health webhooks and answers questions using the vector knowledge base. |
 
 ## Directory Structure
 
 ```text
 chris-guru/
 ├── README.md
-├── feed_updates/
-│   ├── credentials_update/
+├── feed-updates/
+│   ├── credentials-feed-sync/
 │   │   ├── README.md
 │   │   └── workflow.json
-│   └── github_update/
+│   └── github-feed-sync/
 │       ├── README.md
 │       └── workflow.json
-├── knowledge_vectors/
+├── knowledge-vector-sync/
 │   ├── README.md
 │   └── workflow.json
-└── portfolio_chatbot/
+└── portfolio-chatbot/
     ├── README.md
     └── workflow.json
 ```

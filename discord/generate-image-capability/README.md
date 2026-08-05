@@ -1,4 +1,4 @@
-# Generate Image Capability
+# Discord — Generate Image Capability
 
 A reusable n8n sub-workflow that accepts an image prompt, normalizes the requested
 aspect, calls OpenRouter's image API, converts the base64 response to binary, and

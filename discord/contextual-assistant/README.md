@@ -1,4 +1,4 @@
-# LLM Assistant — Dynamic
+# Discord Contextual Assistant
 
 A context-aware Discord assistant endpoint. It converts the triggering message
 and recent channel context into an agent input, uses an OpenRouter model,
@@ -15,7 +15,7 @@ IDs. Recent context is explicitly treated as untrusted text in the agent prompt.
 ## Setup
 
 1. Import [workflow.json](./workflow.json).
-2. Replace `your-llm-assistant-dynamic-webhook-path` with a unique path.
+2. Replace `your-discord-contextual-assistant-webhook-path` with a unique path.
 3. Attach credentials for webhook header authentication, OpenRouter, SearXNG,
    Firecrawl, and PostgreSQL chat memory.
 4. Confirm the `discord_chat_memory` table name and retention policy are

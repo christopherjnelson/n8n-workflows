@@ -1,4 +1,4 @@
-# Sleeper Bench Court Workflow
+# Sleeper — Bench Court
 
 This public n8n form accepts a Sleeper league ID and completed NFL week, computes
 the highest-scoring legal lineup for every roster, and renders a courtroom-style

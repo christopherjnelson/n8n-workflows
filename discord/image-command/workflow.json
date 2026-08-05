@@ -7,7 +7,7 @@
           "value": "YOUR_GENERATE_IMAGE_WORKFLOW_ID",
           "mode": "list",
           "cachedResultUrl": "",
-          "cachedResultName": "Capability - Generate Image"
+          "cachedResultName": "Discord — Generate Image Capability"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
