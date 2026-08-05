@@ -12,6 +12,7 @@ drift out of date.
 | Collection | Description |
 | --- | --- |
 | [`chris-guru`](./chris-guru/) | Automations that publish portfolio activity, maintain the knowledge-vector index, and power the Ziggy chatbot for [chris.guru](https://github.com/christopherjnelson/chris.guru). |
+| [`discord`](./discord/) | Authenticated Discord assistant and image-generation endpoints plus their reusable image capability. |
 | [`resume-tailor`](./resume-tailor/) | AI-powered resume builder that scrapes a job posting, validates it, retrieves verified candidate data from Notion, and generates a tailored ATS-friendly resume as a PDF. |
 | [`sleeper`](./sleeper/) | Fantasy-football reports and digests powered by the read-only [`n8n-nodes-sleeper`](https://github.com/christopherjnelson/n8n-nodes-sleeper) community node. |
 
@@ -25,3 +26,9 @@ passwords, secrets, or authorization headers; private data-source IDs;
 production webhook paths; pinned execution data; or n8n instance IDs. Document
 required credential types and replace private identifiers with descriptive
 placeholders so users reconnect their own services after import.
+
+Exports may also contain links to other workflows or n8n data tables. Replace
+those instance-scoped IDs with descriptive placeholders and document how to
+reselect the imported resource. Public form and webhook examples must import
+inactive and should be authenticated before publication when they expose
+personal data, paid APIs, or agent tools.

@@ -9,7 +9,9 @@ community node and do not require a Sleeper login or Sleeper credential.
 
 | Workflow | Export | Setup guide | Purpose |
 | --- | --- | --- | --- |
+| Bench Court | [Export](./bench_court/workflow.json) | [Setup guide](./bench_court/README.md) | Finds optimal legal weekly lineups, bench blunders, lineup efficiency, and results that could have flipped. |
 | Daily Trends | [Export](./daily_trends/workflow.json) | [Setup guide](./daily_trends/README.md) | Posts the top ten player adds and drops from the previous 24 hours to Discord each morning. |
+| Multiverse Luck Index | [Export](./multiverse_luck_index/workflow.json) | [Setup guide](./multiverse_luck_index/README.md) | Replays each weekly score against every opponent and posts a Discord luck index. |
 | Preseason Command Center | [Export](./preseason_command_center/workflow.json) | [Setup guide](./preseason_command_center/README.md) | Accepts a public Sleeper username and league ID, then renders a browser-based league, roster, draft, and scoring report. |
 
 ## Community Node Requirements
@@ -48,7 +50,13 @@ player map per run and uses it only to resolve the trending player IDs.
 ```text
 sleeper/
 ├── README.md
+├── bench_court/
+│   ├── README.md
+│   └── workflow.json
 ├── daily_trends/
+│   ├── README.md
+│   └── workflow.json
+├── multiverse_luck_index/
 │   ├── README.md
 │   └── workflow.json
 └── preseason_command_center/
@@ -56,7 +64,7 @@ sleeper/
     └── workflow.json
 ```
 
-The checked-in exports contain no Sleeper credentials, n8n instance IDs,
-production webhook IDs, pinned execution data, or real form paths. The Discord
-workflow's credential binding is also removed and must be reconnected after
-import.
+The checked-in exports contain no Sleeper credentials, real league IDs, n8n
+instance or data-table IDs, production webhook IDs, pinned execution data, or
+real form paths. Discord credential bindings are also removed and must be
+reconnected after import.

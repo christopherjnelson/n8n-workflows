@@ -2,7 +2,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Setup\n1. Install `n8n-nodes-sleeper@next` (currently `0.1.1`).\n2. In Discord, create an incoming webhook for the channel.\n3. Open **Send Digest to Discord** and create/select a **Discord Webhook API** credential using that URL.\n4. Run **Test Workflow Manually**.\n5. Publish/activate the workflow when ready for the daily schedule.\n\nThe workflow requests the active NFL player map once per run to turn player IDs into names. Keep the schedule daily, matching Sleeper's player-data guidance.",
+        "content": "## Setup\n1. Install `n8n-nodes-sleeper`.\n2. In Discord, create an incoming webhook for the channel.\n3. Open **Send Digest to Discord** and create/select a **Discord Webhook API** credential using that URL.\n4. Run **Test Workflow Manually**.\n5. Publish/activate the workflow when ready for the daily schedule.\n\nThe workflow requests the active NFL player map once per run to turn player IDs into names. Keep the schedule daily, matching Sleeper's player-data guidance.",
         "height": 300,
         "width": 560,
         "color": 5
@@ -153,7 +153,6 @@
         448
       ],
       "notesInFlow": true,
-      "credentials": {},
       "notes": "Create/select a Discord Webhook API credential here. The exported workflow intentionally contains no webhook URL or credential binding."
     },
     {

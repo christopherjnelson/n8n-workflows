@@ -1,0 +1,361 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Sleeper Bench Court",
+        "formDescription": "Put last week on trial. See who left the most points on the bench, who set the sharpest lineup, and whether any manager literally benched a win.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Sleeper League ID",
+              "fieldName": "leagueId",
+              "placeholder": "e.g. 1234567890123456789",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Completed week",
+              "fieldType": "number",
+              "fieldName": "week",
+              "placeholder": "1–18",
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "lastNode",
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Convene Bench Court",
+          "path": "your-sleeper-bench-court-form-path",
+          "ignoreBots": true,
+          "customCss": ":root {\n  --font-family: Inter, ui-sans-serif, system-ui, sans-serif;\n  --color-background: #080611;\n  --color-test-notice-text: #d8ccff;\n  --color-test-notice-bg: #171329;\n  --color-test-notice-border: #493582;\n  --color-card-bg: #171329;\n  --color-card-border: #493582;\n  --color-card-shadow: rgba(0, 0, 0, 0.42);\n  --color-link: #b7aacd;\n  --color-header: #f8fafc;\n  --color-header-subtext: #b7aacd;\n  --color-label: #f7f2ff;\n  --color-input-border: #493582;\n  --color-input-text: #f8fafc;\n  --color-input-bg: #0f0c1b;\n  --color-focus-border: #a78bfa;\n  --color-submit-btn-bg: #8b5cf6;\n  --color-submit-btn-text: #ffffff;\n  --color-error: #fb7185;\n  --color-required: #ff4d8d;\n  --color-clear-button-bg: #7c3aed;\n  --color-html-text: #f8fafc;\n  --color-html-link: #c4b5fd;\n  --border-radius-card: 24px;\n  --border-radius-input: 12px;\n  --padding-card: 30px;\n  --container-width: 448px;\n  --box-shadow-card: 0 24px 80px 0 var(--color-card-shadow);\n  --opacity-placeholder: .58;\n}\nhtml, body { min-height: 100%; background: #080611; }\nbody {\n  min-height: 100vh;\n  background: radial-gradient(circle at 50% -10%, #2b1658 0, #130c25 36%, #080611 72%) fixed;\n}\n.container { width: min(var(--container-width), calc(100% - 32px)); }\n.card { backdrop-filter: blur(14px); }\n.form-header h1 { letter-spacing: -.035em; font-weight: 800; }\n.form-header p { line-height: 1.55; }\n.test-notice + hr { display: none; }\nform input[type='number'] { color-scheme: dark; }\n#submit-btn {\n  background: linear-gradient(135deg, #8b5cf6, #ff4d8d);\n  border-radius: 999px;\n  font-weight: 800;\n  box-shadow: 0 12px 30px rgba(139, 92, 246, .34);\n}\n#submit-btn:hover { opacity: .9; transform: translateY(-1px); }"
+        }
+      },
+      "id": "7f56b1df-21cc-4315-8b6f-32430b8e82a2",
+      "name": "Sleeper Bench Court Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "YOUR_BENCH_COURT_REQUEST_TABLE_ID",
+          "mode": "list",
+          "cachedResultName": "Sleeper Bench Court Requests"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "league_id": "={{ $(\"Sleeper Bench Court Form\").first().json.leagueId }}",
+            "week": "={{ Number($(\"Sleeper Bench Court Form\").first().json.week) }}",
+            "submitted_at": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "league_id",
+              "displayName": "league_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "week",
+              "displayName": "week",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "submitted_at",
+              "displayName": "submitted_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": true,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "c2bc81a6-f2fd-4726-af38-a2ec4b3382f6",
+      "name": "Log Bench Court Request",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const form = $('Sleeper Bench Court Form').first().json ?? {};\nconst leagueId = String(form.leagueId ?? '').trim();\nconst week = Number(form.week);\nif (!leagueId || leagueId.length > 128) throw new Error('Enter a valid Sleeper league ID.');\nif (!Number.isInteger(week) || week < 1 || week > 18) throw new Error('Week must be a whole number from 1 to 18.');\nreturn [{ json: { leagueId, week, submittedAt: form.submittedAt ?? new Date().toISOString() } }];"
+      },
+      "id": "efa26345-05a9-4d83-9816-0447c19742b8",
+      "name": "Validate Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "league",
+        "leagueId": "={{ $(\"Validate Request\").first().json.leagueId }}"
+      },
+      "id": "ebf77a41-a73f-4eb0-b796-0016b4c249a0",
+      "name": "Get League Settings",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        672,
+        400
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "leagueUser",
+        "leagueId": "={{ $(\"Validate Request\").first().json.leagueId }}"
+      },
+      "id": "93932afd-8375-412a-8113-145f461d7474",
+      "name": "Get League Managers",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        896,
+        400
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "roster",
+        "leagueId": "={{ $(\"Validate Request\").first().json.leagueId }}"
+      },
+      "id": "bb44519f-20f7-48d5-b0c3-08ad2f6f1936",
+      "name": "Get League Rosters",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        400
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "matchup",
+        "leagueId": "={{ $(\"Validate Request\").first().json.leagueId }}",
+        "week": "={{ $(\"Validate Request\").first().json.week }}"
+      },
+      "id": "3a019d92-2d2c-421c-aee9-5f70370a0daf",
+      "name": "Get Week Matchups",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        400
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "player"
+      },
+      "id": "c9024488-542a-4a14-95f1-4ea61f48e30e",
+      "name": "Get Active Player Map",
+      "type": "n8n-nodes-sleeper.sleeper",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        400
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const form = $('Sleeper Bench Court Form').first().json ?? {};\nconst league = $('Get League Settings').first().json ?? {};\nconst users = $('Get League Managers').all().map((item) => item.json ?? {});\nconst rosters = $('Get League Rosters').all().map((item) => item.json ?? {});\nconst matchups = $('Get Week Matchups').all().map((item) => item.json ?? {});\nconst playerMap = $('Get Active Player Map').first().json ?? {};\n\nconst leagueId = String(form.leagueId ?? '').trim();\nconst week = Number(form.week);\nconst generatedAt = new Date().toISOString();\n\nconst finite = (value, fallback = 0) => {\n  const number = Number(value);\n  return Number.isFinite(number) ? number : fallback;\n};\n\nconst round = (value, digits = 2) => {\n  const power = 10 ** digits;\n  return Math.round((finite(value) + Number.EPSILON) * power) / power;\n};\n\nconst escapeHtml = (value) =>\n  String(value ?? '')\n    .replaceAll('&', '&amp;')\n    .replaceAll('<', '&lt;')\n    .replaceAll('>', '&gt;')\n    .replaceAll('\"', '&quot;')\n    .replaceAll(\"'\", '&#039;');\n\nconst usersById = new Map(\n  users\n    .filter((user) => user.user_id !== null && user.user_id !== undefined)\n    .map((user) => [String(user.user_id), user]),\n);\n\nconst rostersById = new Map(\n  rosters\n    .filter((roster) => roster.roster_id !== null && roster.roster_id !== undefined)\n    .map((roster) => [String(roster.roster_id), roster]),\n);\n\nconst teamNameForRoster = (rosterId) => {\n  const roster = rostersById.get(String(rosterId));\n  const owner = roster ? usersById.get(String(roster.owner_id)) : null;\n  return (\n    owner?.metadata?.team_name ||\n    owner?.metadata?.team_name_update ||\n    owner?.display_name ||\n    (rosterId !== null && rosterId !== undefined ? `Roster ${rosterId}` : 'Unknown roster')\n  );\n};\n\nconst playerFor = (playerId) => playerMap[String(playerId)] ?? {};\n\nconst playerName = (playerId) => {\n  const player = playerFor(playerId);\n  return (\n    player.full_name ||\n    [player.first_name, player.last_name].filter(Boolean).join(' ') ||\n    String(playerId)\n  );\n};\n\nconst playerPositions = (playerId) => {\n  const player = playerFor(playerId);\n  const positions = Array.isArray(player.fantasy_positions)\n    ? player.fantasy_positions\n    : [player.position];\n  return new Set(positions.filter(Boolean).map((position) => String(position).toUpperCase()));\n};\n\nconst inactiveSlots = new Set(['BN', 'IR', 'TAXI', 'RESERVE']);\nconst starterSlots = (Array.isArray(league.roster_positions) ? league.roster_positions : [])\n  .map((slot) => String(slot).toUpperCase())\n  .filter((slot) => !inactiveSlots.has(slot));\n\nconst slotFamilies = {\n  FLEX: ['RB', 'WR', 'TE'],\n  'W/R/T': ['RB', 'WR', 'TE'],\n  WRT: ['RB', 'WR', 'TE'],\n  REC_FLEX: ['WR', 'TE'],\n  'W/T': ['WR', 'TE'],\n  WRRB_FLEX: ['WR', 'RB'],\n  'W/R': ['WR', 'RB'],\n  SUPER_FLEX: ['QB', 'RB', 'WR', 'TE'],\n  'Q/W/R/T': ['QB', 'RB', 'WR', 'TE'],\n  IDP_FLEX: ['DL', 'DE', 'DT', 'LB', 'DB', 'CB', 'S'],\n  'DL/LB/DB': ['DL', 'DE', 'DT', 'LB', 'DB', 'CB', 'S'],\n};\n\nconst canFill = (playerId, slot) => {\n  const positions = playerPositions(playerId);\n  if (positions.has(slot)) return true;\n  const family = slotFamilies[slot];\n  return Array.isArray(family) && family.some((position) => positions.has(position));\n};\n\nconst addEdge = (graph, from, to, capacity, cost, metadata = null) => {\n  const forward = { to, rev: graph[to].length, capacity, cost, metadata };\n  const reverse = { to: from, rev: graph[from].length, capacity: 0, cost: -cost, metadata: null };\n  graph[from].push(forward);\n  graph[to].push(reverse);\n};\n\nconst optimizeLineup = (record) => {\n  const points = record.players_points && typeof record.players_points === 'object'\n    ? record.players_points\n    : {};\n  const playerIds = [...new Set([\n    ...(Array.isArray(record.players) ? record.players : []),\n    ...Object.keys(points),\n  ].filter((id) => id !== null && id !== undefined).map(String))];\n\n  const playerCount = playerIds.length;\n  const slotCount = starterSlots.length;\n  const source = 0;\n  const playerOffset = 1;\n  const slotOffset = playerOffset + playerCount;\n  const sink = slotOffset + slotCount;\n  const graph = Array.from({ length: sink + 1 }, () => []);\n\n  playerIds.forEach((playerId, playerIndex) => {\n    const playerNode = playerOffset + playerIndex;\n    addEdge(graph, source, playerNode, 1, 0);\n    starterSlots.forEach((slot, slotIndex) => {\n      if (!canFill(playerId, slot)) return;\n      const score = finite(points[playerId]);\n      addEdge(\n        graph,\n        playerNode,\n        slotOffset + slotIndex,\n        1,\n        -Math.round(score * 1000),\n        { playerId, slot, slotIndex, score },\n      );\n    });\n  });\n\n  starterSlots.forEach((_, slotIndex) => {\n    addEdge(graph, slotOffset + slotIndex, sink, 1, 0);\n  });\n\n  let flow = 0;\n  let cost = 0;\n  while (flow < slotCount) {\n    const distance = Array(graph.length).fill(Number.POSITIVE_INFINITY);\n    const previousNode = Array(graph.length).fill(-1);\n    const previousEdge = Array(graph.length).fill(-1);\n    distance[source] = 0;\n\n    for (let pass = 0; pass < graph.length - 1; pass += 1) {\n      let changed = false;\n      for (let nodeIndex = 0; nodeIndex < graph.length; nodeIndex += 1) {\n        if (!Number.isFinite(distance[nodeIndex])) continue;\n        graph[nodeIndex].forEach((edge, edgeIndex) => {\n          if (edge.capacity <= 0) return;\n          const candidate = distance[nodeIndex] + edge.cost;\n          if (candidate >= distance[edge.to]) return;\n          distance[edge.to] = candidate;\n          previousNode[edge.to] = nodeIndex;\n          previousEdge[edge.to] = edgeIndex;\n          changed = true;\n        });\n      }\n      if (!changed) break;\n    }\n\n    if (previousNode[sink] === -1) break;\n    for (let nodeIndex = sink; nodeIndex !== source; nodeIndex = previousNode[nodeIndex]) {\n      const from = previousNode[nodeIndex];\n      const edge = graph[from][previousEdge[nodeIndex]];\n      edge.capacity -= 1;\n      graph[nodeIndex][edge.rev].capacity += 1;\n      cost += edge.cost;\n    }\n    flow += 1;\n  }\n\n  const assignments = [];\n  playerIds.forEach((_, playerIndex) => {\n    const playerNode = playerOffset + playerIndex;\n    for (const edge of graph[playerNode]) {\n      if (!edge.metadata || edge.capacity !== 0) continue;\n      assignments.push(edge.metadata);\n    }\n  });\n\n  const actualStarters = (Array.isArray(record.starters) ? record.starters : [])\n    .filter((id) => id !== null && id !== undefined && String(id) !== '0')\n    .map(String);\n  const actualFromPlayers = actualStarters.reduce(\n    (total, playerId) => total + finite(points[playerId]),\n    0,\n  );\n  const actual = Number.isFinite(Number(record.points)) ? Number(record.points) : actualFromPlayers;\n  const calculatedOptimal = -cost / 1000;\n  const optimal = Math.max(calculatedOptimal, actual);\n  const pointsLeft = Math.max(0, optimal - actual);\n  const optimalIds = new Set(assignments.map((assignment) => assignment.playerId));\n  const actualIds = new Set(actualStarters);\n\n  const benchHeroes = assignments\n    .filter((assignment) => !actualIds.has(assignment.playerId))\n    .sort((a, b) => b.score - a.score);\n  const regrettedStarters = actualStarters\n    .filter((playerId) => !optimalIds.has(playerId))\n    .map((playerId) => ({ playerId, score: finite(points[playerId]) }))\n    .sort((a, b) => a.score - b.score);\n\n  const swaps = benchHeroes.slice(0, 3).map((benchPlayer, index) => {\n    const starter = regrettedStarters[index];\n    return {\n      in: playerName(benchPlayer.playerId),\n      inPoints: round(benchPlayer.score),\n      slot: benchPlayer.slot,\n      out: starter ? playerName(starter.playerId) : null,\n      outPoints: starter ? round(starter.score) : null,\n    };\n  });\n\n  return {\n    rosterId: String(record.roster_id ?? ''),\n    matchupId: record.matchup_id,\n    teamName: teamNameForRoster(record.roster_id),\n    actual: round(actual),\n    optimal: round(optimal),\n    pointsLeft: round(pointsLeft),\n    efficiency: optimal > 0 ? round((actual / optimal) * 100, 1) : 100,\n    swaps,\n    filledSlots: flow,\n    totalSlots: slotCount,\n  };\n};\n\nconst teamResults = matchups.map(optimizeLineup);\nconst matchupGroups = new Map();\nfor (const team of teamResults) {\n  const key = team.matchupId === null || team.matchupId === undefined\n    ? `bye-${team.rosterId}`\n    : String(team.matchupId);\n  if (!matchupGroups.has(key)) matchupGroups.set(key, []);\n  matchupGroups.get(key).push(team);\n}\n\nconst games = [...matchupGroups.entries()]\n  .map(([matchupId, teams]) => {\n    const ordered = [...teams].sort((a, b) => b.actual - a.actual);\n    const first = ordered[0] ?? null;\n    const second = ordered[1] ?? null;\n    const margin = first && second ? round(Math.abs(first.actual - second.actual)) : null;\n    let benchedWin = null;\n    if (first && second && first.actual !== second.actual && second.optimal > first.actual) {\n      benchedWin = {\n        teamName: second.teamName,\n        missedBy: round(second.optimal - first.actual),\n      };\n    }\n    return { matchupId, teams: ordered, margin, benchedWin };\n  })\n  .sort((a, b) => finite(a.margin, 999999) - finite(b.margin, 999999));\n\nconst byPointsLeft = [...teamResults].sort((a, b) => b.pointsLeft - a.pointsLeft);\nconst byEfficiency = [...teamResults].sort((a, b) => b.efficiency - a.efficiency);\nconst byActual = [...teamResults].sort((a, b) => b.actual - a.actual);\nconst benchConvict = byPointsLeft[0] ?? null;\nconst lineupValedictorian = byEfficiency[0] ?? null;\nconst highScorer = byActual[0] ?? null;\nconst closestGame = games.find((game) => game.teams.length === 2) ?? null;\nconst benchedWins = games.filter((game) => game.benchedWin);\nconst totalPointsLeft = round(teamResults.reduce((total, team) => total + team.pointsLeft, 0));\nconst incompleteLineups = teamResults.filter((team) => team.filledSlots < team.totalSlots).length;\n\nconst verdict = (team) => {\n  if (team.pointsLeft < 0.01) return 'Clean lineup';\n  if (team.pointsLeft <= 5) return 'Minor lineup misdemeanor';\n  if (team.pointsLeft <= 15) return 'Questionable coaching';\n  return 'Bench felony';\n};\n\nconst awardCard = (icon, title, team, detail) => `\n  <article class=\"award\">\n    <div class=\"award-icon\">${escapeHtml(icon)}</div>\n    <div>\n      <span>${escapeHtml(title)}</span>\n      <strong>${escapeHtml(team || 'Not available')}</strong>\n      <small>${escapeHtml(detail || '')}</small>\n    </div>\n  </article>`;\n\nconst matchupHtml = games.map((game) => {\n  const sides = game.teams.map((team, index) => {\n    const winner = game.teams.length === 2 && index === 0 && game.teams[0].actual !== game.teams[1].actual;\n    const swapText = team.swaps.length\n      ? team.swaps.map((swap) =>\n          `${escapeHtml(swap.in)} (${swap.inPoints})${swap.out ? ` over ${escapeHtml(swap.out)} (${swap.outPoints})` : ''}`,\n        ).join('<br>')\n      : 'No better eligible bench swap found.';\n    return `\n      <section class=\"team ${winner ? 'winner' : ''}\">\n        <header><span>${winner ? '🏆' : '🏈'}</span><h3>${escapeHtml(team.teamName)}</h3></header>\n        <div class=\"score\">${team.actual.toFixed(2)}</div>\n        <div class=\"metrics\">\n          <span><b>${team.optimal.toFixed(2)}</b> optimal</span>\n          <span><b>${team.efficiency.toFixed(1)}%</b> efficient</span>\n          <span><b>${team.pointsLeft.toFixed(2)}</b> benched</span>\n        </div>\n        <p class=\"verdict\">${escapeHtml(verdict(team))}</p>\n        <details><summary>Best lineup changes</summary><p>${swapText}</p></details>\n      </section>`;\n  }).join('');\n\n  const ruling = game.benchedWin\n    ? `<div class=\"ruling guilty\">⚖️ ${escapeHtml(game.benchedWin.teamName)} benched a win by ${game.benchedWin.missedBy.toFixed(2)} points.</div>`\n    : game.teams.length === 2\n      ? `<div class=\"ruling\">Final margin: ${finite(game.margin).toFixed(2)} points.</div>`\n      : '<div class=\"ruling\">No paired opponent was returned for this roster.</div>';\n\n  return `<article class=\"matchup\"><div class=\"teams\">${sides}</div>${ruling}</article>`;\n}).join('');\n\nconst rankingRows = [...teamResults]\n  .sort((a, b) => b.pointsLeft - a.pointsLeft)\n  .map((team, index) => `\n    <tr>\n      <td>${index + 1}</td>\n      <td>${escapeHtml(team.teamName)}</td>\n      <td>${team.actual.toFixed(2)}</td>\n      <td>${team.optimal.toFixed(2)}</td>\n      <td>${team.pointsLeft.toFixed(2)}</td>\n      <td>${team.efficiency.toFixed(1)}%</td>\n      <td>${escapeHtml(verdict(team))}</td>\n    </tr>`).join('');\n\nconst leagueName = league.name || `Sleeper League ${leagueId}`;\n\nconst reportHtml = `\n<style>\n  :root{color-scheme:dark;--color-background:#070a14;--color-card-bg:#070a14;--color-card-border:#070a14;--color-card-shadow:transparent;--ink:#f8fafc;--muted:#a5b4fc;--panel:#111827;--line:#312e81;--accent:#e5ff39;--danger:#fb7185;--purple:#4338ca}\n  html,body{min-height:100%;background:#070a14!important}body{margin:0!important}.container{width:100%!important;max-width:none!important;padding:0!important;margin:0!important;text-align:left!important}.card{padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#070a14!important;margin:0!important}\n  *{box-sizing:border-box}.court{position:relative;max-width:1180px;min-height:100vh;margin:0 auto;padding:28px 18px 60px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;color:var(--ink)}\n  .hero{padding:34px;border:1px solid #4f46e5;border-radius:24px;background:radial-gradient(circle at top right,rgba(229,255,57,.18),transparent 28rem),linear-gradient(135deg,#1e1b4b,#111827 68%);box-shadow:0 24px 70px rgba(0,0,0,.35)}\n  .eyebrow{text-transform:uppercase;letter-spacing:.14em;color:var(--accent);font-weight:800;font-size:12px}.hero h1{font-size:clamp(34px,6vw,68px);line-height:.95;margin:10px 0 16px;letter-spacing:-.05em}.hero p{color:#c7d2fe;max-width:760px;font-size:17px;line-height:1.6}\n  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:24px}.stat{padding:16px;border-radius:16px;background:rgba(17,24,39,.76);border:1px solid #3730a3}.stat b{display:block;font-size:25px;color:var(--accent)}.stat span{color:#c7d2fe;font-size:13px}\n  .court h2{color:var(--ink);font-size:28px;margin:38px 0 16px;letter-spacing:-.03em}.awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.award{display:flex;gap:14px;padding:18px;border-radius:18px;background:linear-gradient(145deg,#111827,#0d1324);border:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.18)}.award-icon{font-size:30px}.award span,.award small{display:block;color:var(--muted);font-size:12px}.award strong{display:block;margin:4px 0;font-size:18px;line-height:1.25}\n  .matchup{margin:18px 0;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#0b1020}.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.team{padding:22px;border-right:1px solid var(--line)}.team:last-child{border-right:0}.team.winner{background:linear-gradient(180deg,rgba(229,255,57,.08),transparent)}.team header{display:flex;align-items:center;gap:9px}.team h3{margin:0;font-size:19px}.score{font-size:45px;font-weight:900;letter-spacing:-.05em;margin:14px 0}.metrics{display:flex;flex-wrap:wrap;gap:8px}.metrics span{padding:7px 9px;border-radius:999px;background:#1f2937;color:#c7d2fe;font-size:12px}.metrics b{color:#fff}.verdict{color:var(--accent);font-weight:800}.team details{color:#c7d2fe}.team summary{cursor:pointer}.team details p{line-height:1.6}.ruling{padding:14px 20px;background:#1e1b4b;color:#c7d2fe;font-weight:700}.ruling.guilty{background:rgba(251,113,133,.14);color:#fecdd3}\n  .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px}table{width:100%;border-collapse:collapse;background:var(--panel)}th,td{padding:13px 15px;text-align:left;border-bottom:1px solid #272f45;white-space:nowrap}th{color:var(--accent);font-size:12px;text-transform:uppercase;letter-spacing:.08em}td{color:#dbeafe}.note{margin-top:28px;padding:18px;border-left:4px solid var(--accent);background:#111827;color:#c7d2fe;line-height:1.6}.footer{margin-top:24px;color:#818cf8;font-size:12px}\n  @media(max-width:640px){.hero{padding:24px}.team{border-right:0;border-bottom:1px solid var(--line)}.court{padding:16px 8px 40px}}\n</style>\n<main class=\"court\">\n  <section class=\"hero\">\n    <div class=\"eyebrow\">Sleeper Bench Court · Week ${escapeHtml(week)}</div>\n    <h1>${escapeHtml(leagueName)}</h1>\n    <p>The evidence has been entered. Bench Court compares each submitted lineup with the highest-scoring legal lineup available from that roster's recorded weekly players.</p>\n    <div class=\"stats\">\n      <div class=\"stat\"><b>${teamResults.length}</b><span>teams reviewed</span></div>\n      <div class=\"stat\"><b>${totalPointsLeft.toFixed(2)}</b><span>points left on benches</span></div>\n      <div class=\"stat\"><b>${benchedWins.length}</b><span>results that could flip</span></div>\n      <div class=\"stat\"><b>${escapeHtml(generatedAt.slice(0, 10))}</b><span>ruling generated</span></div>\n    </div>\n  </section>\n\n  <h2>Weekly awards</h2>\n  <section class=\"awards\">\n    ${awardCard('🚔', 'Bench Felony', benchConvict?.teamName, benchConvict ? `${benchConvict.pointsLeft.toFixed(2)} points left behind` : '')}\n    ${awardCard('🎓', 'Lineup Valedictorian', lineupValedictorian?.teamName, lineupValedictorian ? `${lineupValedictorian.efficiency.toFixed(1)}% efficient` : '')}\n    ${awardCard('🔥', 'High Score', highScorer?.teamName, highScorer ? `${highScorer.actual.toFixed(2)} actual points` : '')}\n    ${awardCard('📸', 'Photo Finish', closestGame?.teams.map((team) => team.teamName).join(' vs '), closestGame ? `${finite(closestGame.margin).toFixed(2)}-point margin` : '')}\n  </section>\n\n  <h2>Matchup rulings</h2>\n  ${matchupHtml || '<div class=\"note\">No matchup records were returned for this league and week.</div>'}\n\n  <h2>Bench accountability ranking</h2>\n  <div class=\"table-wrap\">\n    <table>\n      <thead><tr><th>#</th><th>Team</th><th>Actual</th><th>Optimal</th><th>Benched</th><th>Efficiency</th><th>Verdict</th></tr></thead>\n      <tbody>${rankingRows || '<tr><td colspan=\"7\">No teams returned.</td></tr>'}</tbody>\n    </table>\n  </div>\n\n  <div class=\"note\">\n    <strong>How the ruling works:</strong> Bench Court uses the league's configured starter slots and each player's Sleeper fantasy-position eligibility. It solves a maximum-score legal assignment across QB, RB, WR, TE, K, DEF, FLEX, SUPER_FLEX, REC_FLEX, WRRB_FLEX, and common IDP slots. It evaluates recorded weekly points only; it does not claim a manager could have predicted those results before kickoff.\n    ${incompleteLineups ? `<br><strong>Review note:</strong> ${incompleteLineups} roster(s) did not have enough recognized position data to fill every configured slot, so their actual score was retained as the minimum optimal score.` : ''}\n  </div>\n  <div class=\"footer\">Generated with the unofficial, read-only n8n-nodes-sleeper community node. Sleeper data remains public and belongs to its respective owners. This project is not affiliated with or endorsed by Sleeper.</div>\n</main>`;\n\nreturn [{\n  json: {\n    reportHtml,\n    leagueId,\n    leagueName,\n    week,\n    generatedAt,\n    summary: {\n      teamsReviewed: teamResults.length,\n      matchupsReviewed: games.length,\n      totalPointsLeft,\n      benchedWins: benchedWins.length,\n      incompleteLineups,\n    },\n  },\n}];\n"
+      },
+      "id": "e059935e-2759-4c73-bd91-2844ecfd31c8",
+      "name": "Build Bench Court Ruling",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        400
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "respondWith": "showText",
+        "responseText": "={{ $json.reportHtml }}"
+      },
+      "id": "7785dfa6-5f33-422a-b94f-bc4040a1b838",
+      "name": "Show Bench Court",
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        2016,
+        400
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "content": "## How to use this workflow\n\nOpen the form, enter a public Sleeper league ID and a completed NFL week. Requests are logged to the **Sleeper Bench Court Requests** data table before live league data is fetched.",
+        "height": 200,
+        "width": 900,
+        "color": 5
+      },
+      "id": "e64c7730-3fe1-415b-b479-13c332544145",
+      "name": "Sticky Note 57c0915c",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        576,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## What makes Bench Court different\n\nThe workflow solves a legal optimal lineup against the league's real starter slots—including flex and superflex—then compares it with actual scores, identifies benched wins, and renders a shareable weekly courtroom-style report.",
+        "height": 200,
+        "width": 2100,
+        "color": 7
+      },
+      "id": "54608461-2703-4121-809d-fdd9ce4e45f6",
+      "name": "Sticky Note 772c49dd",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        32,
+        592
+      ]
+    }
+  ],
+  "connections": {
+    "Sleeper Bench Court Form": {
+      "main": [
+        [
+          {
+            "node": "Log Bench Court Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Bench Court Request": {
+      "main": [
+        [
+          {
+            "node": "Validate Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Request": {
+      "main": [
+        [
+          {
+            "node": "Get League Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get League Settings": {
+      "main": [
+        [
+          {
+            "node": "Get League Managers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get League Managers": {
+      "main": [
+        [
+          {
+            "node": "Get League Rosters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get League Rosters": {
+      "main": [
+        [
+          {
+            "node": "Get Week Matchups",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Week Matchups": {
+      "main": [
+        [
+          {
+            "node": "Get Active Player Map",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Active Player Map": {
+      "main": [
+        [
+          {
+            "node": "Build Bench Court Ruling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Bench Court Ruling": {
+      "main": [
+        [
+          {
+            "node": "Show Bench Court",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": ""
+  }
+}

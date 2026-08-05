@@ -1,0 +1,260 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data[0].b64_json",
+        "options": {
+          "fileName": "={{\n  $json.data[0].media_type === 'image/jpeg'\n    ? 'generated-image.jpg'\n    : $json.data[0].media_type === 'image/webp'\n      ? 'generated-image.webp'\n      : 'generated-image.png'\n}}",
+          "mimeType": "={{ $json.data[0].media_type || 'application/octet-stream' }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        112,
+        -16
+      ],
+      "id": "8317c715-eea6-4e8d-ac39-d9b3a57033ec",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "prompt"
+            },
+            {
+              "name": "aspect"
+            },
+            {
+              "name": "requestedBy"
+            },
+            {
+              "name": "requestId"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -608,
+        -16
+      ],
+      "id": "2f9f9a13-207a-4728-bedf-c2ab78e2cff6",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/images",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "={{ $json.model }}"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $json.prompt }}"
+            },
+            {
+              "name": "aspect_ratio",
+              "value": "={{ $json.aspectRatio }}"
+            },
+            {
+              "name": "resolution",
+              "value": "={{ $json.resolution }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -112,
+        -16
+      ],
+      "id": "ac03b48b-b51b-487f-bca1-f84017813655",
+      "name": "OpenRouter Image Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae4f7d92-3da3-4ade-8439-4e4054e1eb38",
+              "name": "prompt",
+              "value": "={{ $json.prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "4502bf7b-181e-4713-becd-a093b2a6f041",
+              "name": "aspectRatio",
+              "value": "={{\n  $json.aspect === 'landscape'\n    ? '16:9'\n    : $json.aspect === 'portrait'\n      ? '9:16'\n      : '1:1'\n}}",
+              "type": "string"
+            },
+            {
+              "id": "e805c760-1aad-4dab-a458-4aada9673354",
+              "name": "requestedBy",
+              "value": "={{ $json.requestedBy || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "a0584d61-cf42-4636-854d-ab4f5438bc44",
+              "name": "requestId",
+              "value": "={{ $json.requestId || $execution.id }}",
+              "type": "string"
+            },
+            {
+              "id": "0c07a429-041c-45b1-b171-7f2898891964",
+              "name": "model",
+              "value": "=bytedance-seed/seedream-4.5",
+              "type": "string"
+            },
+            {
+              "id": "372784d3-215f-4a83-8042-73a3e561bf8a",
+              "name": "resolution",
+              "value": "2K",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -336,
+        -16
+      ],
+      "id": "bb14a94d-8e6f-4d1d-960c-0aff8ddefe24",
+      "name": "Normalize Image Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0ed39610-1244-496f-a944-fd4018026985",
+              "name": "status",
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "id": "ec85e5a9-b1a0-497c-9dd4-6d80cbf71a90",
+              "name": "requestId",
+              "value": "={{ $('Normalize Image Request').item.json.requestId }}",
+              "type": "string"
+            },
+            {
+              "id": "5c16bdfd-fc31-42c4-9bc5-83747d5d7e78",
+              "name": "prompt",
+              "value": "={{ $('Normalize Image Request').item.json.prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "af1f7742-1ee0-4e69-97ba-883a0eef9445",
+              "name": "model",
+              "value": "={{ $('Normalize Image Request').item.json.model }}",
+              "type": "string"
+            },
+            {
+              "id": "9404788f-991f-4e93-9ded-07b20542649e",
+              "name": "filename",
+              "value": "={{ $binary.data.fileName }}",
+              "type": "string"
+            },
+            {
+              "id": "2e657fe6-9a00-4a28-bf11-d3c89898130b",
+              "name": "mimeType",
+              "value": "={{ $binary.data.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "e612bdf3-6ea1-46eb-a6bb-ab1ff7bf045a",
+              "name": "aspect",
+              "value": "={{ $('Normalize Image Request').item.json.aspect }}",
+              "type": "string"
+            },
+            {
+              "id": "087a933d-6b4c-4db1-a63f-47e457001aeb",
+              "name": "aspectRatio",
+              "value": "={{   $json.aspect === 'landscape' ? '16:9' : $json.aspect === 'portrait' ? '9:16' : '1:1' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        320,
+        -16
+      ],
+      "id": "a48f0872-b714-4c83-9d9d-75fc564080c7",
+      "name": "Normalize Image Output"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Normalize Image Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Image Request": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Image Request": {
+      "main": [
+        [
+          {
+            "node": "OpenRouter Image Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Normalize Image Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": ""
+  }
+}

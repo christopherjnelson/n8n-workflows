@@ -5,10 +5,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        528,
-        1296
+        -608,
+        480
       ],
-      "id": "18f353ad-7ebb-418a-9c50-5db139837814",
+      "id": "8f635624-b282-41e4-8d9a-bfffc2391454",
       "name": "Manual Refresh"
     },
     {
@@ -24,15 +24,14 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        528,
-        1536
+        -608,
+        720
       ],
-      "id": "4aec8210-2dcf-444a-9601-6f955a3abc76",
+      "id": "e722d9d4-3a0e-4b0f-8630-bd08adbf1372",
       "name": "Daily 3 AM Refresh"
     },
     {
       "parameters": {
-        "authentication": "oAuth2",
         "resource": "databasePage",
         "operation": "getAll",
         "dataSourceId": {
@@ -44,17 +43,17 @@
         },
         "returnAll": true,
         "simple": false,
-        "options": {}
+        "options": {},
+        "authentication": "oAuth2"
       },
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        784,
-        896
+        -368,
+        80
       ],
-      "id": "8329bb6b-41e7-4dc7-9a38-6e700268258f",
-      "name": "Get Projects",
-      "credentials": {}
+      "id": "bfb39466-bedd-4341-a4e7-7ef3e28cdde0",
+      "name": "Get Projects"
     },
     {
       "parameters": {
@@ -65,15 +64,14 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1040,
-        896
+        -96,
+        80
       ],
-      "id": "a998794a-f70a-43fd-ae3f-d17eea913977",
+      "id": "17743269-fbcb-483a-9eb6-c93706f548f1",
       "name": "Normalize Projects"
     },
     {
       "parameters": {
-        "authentication": "oAuth2",
         "resource": "databasePage",
         "operation": "getAll",
         "dataSourceId": {
@@ -85,17 +83,17 @@
         },
         "returnAll": true,
         "simple": false,
-        "options": {}
+        "options": {},
+        "authentication": "oAuth2"
       },
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        784,
-        1168
+        -352,
+        352
       ],
-      "id": "3a8f36e5-ff0b-47e8-ab2d-8089f09eeb0f",
-      "name": "Get Experience",
-      "credentials": {}
+      "id": "f12b5bc2-1618-44c8-8a7c-d4cd315c69da",
+      "name": "Get Experience"
     },
     {
       "parameters": {
@@ -106,15 +104,14 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1040,
-        1168
+        -96,
+        352
       ],
-      "id": "50bccd92-0b13-4b84-87b9-476a0d9107f3",
+      "id": "b4c128be-a10d-48e9-bc3d-669eeef698b5",
       "name": "Normalize Experience"
     },
     {
       "parameters": {
-        "authentication": "oAuth2",
         "resource": "databasePage",
         "operation": "getAll",
         "dataSourceId": {
@@ -126,17 +123,17 @@
         },
         "returnAll": true,
         "simple": false,
-        "options": {}
+        "options": {},
+        "authentication": "oAuth2"
       },
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        784,
-        1456
+        -352,
+        640
       ],
-      "id": "a757b8ef-9658-44e5-9433-346e8aa00af6",
-      "name": "Get Skills",
-      "credentials": {}
+      "id": "f6336d85-a3d7-4c29-8aed-be5676efbfc4",
+      "name": "Get Skills"
     },
     {
       "parameters": {
@@ -166,10 +163,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1040,
-        1456
+        -96,
+        640
       ],
-      "id": "826a45d0-545e-4826-a280-9e4d24ec76ba",
+      "id": "c0d13ac1-00c1-490d-be81-5c89e4f706ba",
       "name": "Active Skills Only"
     },
     {
@@ -181,15 +178,14 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1296,
-        1440
+        160,
+        624
       ],
-      "id": "96fa9445-180b-43a8-8f44-485730dd6189",
+      "id": "99d94853-f370-4b0b-8081-689577875957",
       "name": "Normalize Skills"
     },
     {
       "parameters": {
-        "authentication": "oAuth2",
         "resource": "databasePage",
         "operation": "getAll",
         "dataSourceId": {
@@ -201,17 +197,17 @@
         },
         "returnAll": true,
         "simple": false,
-        "options": {}
+        "options": {},
+        "authentication": "oAuth2"
       },
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        784,
-        1744
+        -352,
+        928
       ],
-      "id": "ad8390a3-3fc4-4034-8a8b-53b2dad61af0",
-      "name": "Get Credentials",
-      "credentials": {}
+      "id": "2c1ad59a-89b9-4a14-8509-170407e65388",
+      "name": "Get Credentials"
     },
     {
       "parameters": {
@@ -222,10 +218,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1040,
-        1744
+        -96,
+        928
       ],
-      "id": "4a1760cd-ea77-4fc3-813d-b916ccacbf0f",
+      "id": "7b2ad203-e336-486b-a77a-3c2f56a8e55d",
       "name": "Normalize Credentials"
     },
     {
@@ -233,10 +229,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1568,
-        1056
+        432,
+        240
       ],
-      "id": "9bdfe027-c333-44e1-b76c-fc00dcd18c82",
+      "id": "5a27fb8c-f333-49da-8878-6fe29f7ef5c5",
       "name": "Append Projects and Experience"
     },
     {
@@ -244,10 +240,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1808,
-        1248
+        672,
+        432
       ],
-      "id": "8a75c55b-6dc3-48cd-9ad6-e4c68347f7df",
+      "id": "f49c7d7e-3b8b-4e35-aea0-256fcd4afd6b",
       "name": "Append Skills"
     },
     {
@@ -255,10 +251,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        2048,
-        1392
+        912,
+        576
       ],
-      "id": "1c0e838c-a7d1-475d-ae05-f48b5cebbd9d",
+      "id": "08f63ac9-ed40-4a07-a098-38230a7288b8",
       "name": "Append Credentials"
     },
     {
@@ -268,10 +264,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        2288,
-        1392
+        1152,
+        576
       ],
-      "id": "c06eec50-a61a-4f5b-819d-62c874bcba20",
+      "id": "9c48e672-2539-4b68-846e-9f8419b57491",
       "name": "Loop Over Documents"
     },
     {
@@ -302,15 +298,14 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2528,
-        1408
+        1392,
+        592
       ],
-      "id": "9e7f4faf-81bd-4849-84c7-1f6cd7db1168",
+      "id": "c70afac6-e3bd-40a6-bbdb-185851c8fa84",
       "name": "Fetch Page Body?"
     },
     {
       "parameters": {
-        "authentication": "oAuth2",
         "resource": "block",
         "operation": "getAll",
         "blockId": {
@@ -318,18 +313,18 @@
           "value": "={{ $json.page_url }}",
           "mode": "url"
         },
-        "returnAll": true
+        "returnAll": true,
+        "authentication": "oAuth2"
       },
       "type": "n8n-nodes-base.notion",
       "typeVersion": 3,
       "position": [
-        2784,
-        1200
+        1648,
+        384
       ],
-      "id": "fcf73547-26bd-4f46-a081-19bc24d55c28",
+      "id": "b2370f10-dbab-4595-b779-d975a16d5342",
       "name": "Get Current Page Blocks",
-      "alwaysOutputData": true,
-      "credentials": {}
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -340,10 +335,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        3024,
-        1200
+        1888,
+        384
       ],
-      "id": "97db8745-130d-46eb-9327-8a533b1af94b",
+      "id": "074f1f5f-dcb5-4822-b02a-53c2b9230979",
       "name": "Aggregate Current Page Blocks"
     },
     {
@@ -369,10 +364,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3264,
-        1200
+        2128,
+        384
       ],
-      "id": "b87e4ea6-3025-422e-8bb1-cabf837a032e",
+      "id": "e14e00b1-542f-4e3e-8cd8-08288cfd006a",
       "name": "Convert Current Blocks to Text"
     },
     {
@@ -384,10 +379,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        3504,
-        1344
+        2368,
+        528
       ],
-      "id": "8f1f74b5-3e46-42a6-8bd5-44838952959a",
+      "id": "41766a14-e14f-476f-a43e-98d30e0e76f5",
       "name": "Merge Document and Page Body"
     },
     {
@@ -408,10 +403,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3744,
-        1344
+        2608,
+        528
       ],
-      "id": "32df3bc6-14f0-40cf-8f46-168c81327554",
+      "id": "5002e1ff-567d-4044-a3b7-8f24c04c6163",
       "name": "Build Document With Page Body"
     },
     {
@@ -419,10 +414,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        3984,
-        1504
+        2848,
+        688
       ],
-      "id": "303f9e54-be99-48f1-baea-a2784f7f57b0",
+      "id": "16cce100-2f51-4f3b-a641-c354a616d76f",
       "name": "Current Document Ready"
     },
     {
@@ -435,13 +430,12 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4224,
-        1632
+        3088,
+        816
       ],
-      "id": "e1dba4da-e631-4069-a01f-77343c0916f7",
+      "id": "b6e795fe-be60-48de-9482-a6dca3d4fa3c",
       "name": "Delete Existing Document Vectors",
-      "alwaysOutputData": true,
-      "credentials": {}
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -452,10 +446,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        4464,
-        1632
+        3328,
+        816
       ],
-      "id": "bd625729-b2a5-41fa-80cd-ad9299f493ec",
+      "id": "2aa0868b-befd-4fe4-a13b-70a4e7426076",
       "name": "Confirm Old Vectors Deleted"
     },
     {
@@ -467,10 +461,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        4704,
-        1504
+        3568,
+        688
       ],
-      "id": "91884ec7-2423-4b7f-a82f-7e1271935ab0",
+      "id": "49fee1a5-19f9-4297-a759-283fb8a1a8d0",
       "name": "Continue After Replacement Cleanup"
     },
     {
@@ -484,33 +478,31 @@
         },
         "options": {}
       },
-      "id": "af51fe76-bfca-489f-958c-5035682f602c",
+      "id": "35092212-29a1-4986-affd-2b2ce595855d",
       "name": "Insert Current Document Vectors",
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        4944,
-        1504
-      ],
-      "credentials": {}
+        3808,
+        688
+      ]
     },
     {
       "parameters": {
-        "model": "baai/bge-m3",
+        "model": "=baai/bge-m3",
         "options": {
           "dimensions": 1024,
           "batchSize": 100
         }
       },
-      "id": "2cfd9f35-4221-42ae-8944-746773d6e304",
+      "id": "d6a86f15-291f-4690-ad33-80d33c3f2a9f",
       "name": "OpenRouter BGE-M3",
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        4800,
-        1760
-      ],
-      "credentials": {}
+        3648,
+        960
+      ]
     },
     {
       "parameters": {
@@ -596,13 +588,13 @@
           }
         }
       },
-      "id": "133df018-d49c-4fc1-bdda-01621ddf2965",
+      "id": "5be16bb3-a539-428a-81a3-5ec5ab656033",
       "name": "Notion Document Loader",
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1.1,
       "position": [
-        4960,
-        1760
+        3824,
+        944
       ]
     },
     {
@@ -614,10 +606,10 @@
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "typeVersion": 1,
       "position": [
-        5104,
-        1968
+        3968,
+        1152
       ],
-      "id": "fe7d6eed-ef1f-4fbb-940a-1c3d3cd1a9e5",
+      "id": "b8707727-fe34-47e5-bcb7-f0255fa698f4",
       "name": "Recursive Character Text Splitter"
     },
     {
@@ -630,14 +622,13 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2576,
-        1088
+        1440,
+        272
       ],
-      "id": "2e2b47d2-ed12-4de0-ba10-cfc2899a13dd",
+      "id": "826a703d-9938-4d5f-b2b5-928ab3de189c",
       "name": "Delete Stale Notion Vectors",
       "alwaysOutputData": true,
-      "executeOnce": true,
-      "credentials": {}
+      "executeOnce": true
     }
   ],
   "connections": {

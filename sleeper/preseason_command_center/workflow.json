@@ -40,7 +40,7 @@
     },
     {
       "parameters": {
-        "content": "## Public form workflow\n- Install `n8n-nodes-sleeper@next` (currently `0.1.1`) before importing or running this workflow.\n- Test with the Form Trigger's **Test URL**.\n- Publish/activate the workflow for the **Production URL**.\n- Anyone with the URL can submit it unless you add Form authentication.\n- Form and report share the same Sleeper-branded indigo/white theme.",
+        "content": "## Public form workflow\n- Test with the Form Trigger's **Test URL**.\n- Publish/activate the workflow for the **Production URL**.\n- Anyone with the URL can submit it unless you add Form authentication.\n- Form and report share the same Sleeper-branded indigo/white theme.",
         "height": 220,
         "width": 480,
         "color": 5
@@ -50,7 +50,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        8640,
+        8768,
         1088
       ]
     },
@@ -206,7 +206,7 @@
       "type": "n8n-nodes-base.form",
       "typeVersion": 2.5,
       "position": [
-        11312,
+        11168,
         1392
       ],
       "notesInFlow": true,
@@ -316,6 +316,7 @@
   },
   "pinData": {},
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": ""
   }
 }

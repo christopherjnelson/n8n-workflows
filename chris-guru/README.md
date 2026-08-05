@@ -62,14 +62,16 @@ reconnect their own credentials after importing an export.
 3. Remove or blank `meta.instanceId`.
 4. Replace production webhook paths, webhook IDs, and private data-source IDs
    with descriptive placeholders.
-5. Remove pinned execution data and cached URLs containing private identifiers.
-6. Validate the JSON and scan it before committing:
+5. Replace linked workflow and data-table IDs, and remove cached resource URLs
+   that contain private identifiers.
+6. Remove pinned execution data.
+7. Validate the JSON and scan it before committing:
 
    ```bash
    jq -e . workflow.json >/dev/null
    rg -ni "api.?key|authorization|bearer|password|private.?key|secret|token" workflow.json
    ```
 
-7. Review every match manually because security-related words may legitimately
+8. Review every match manually because security-related words may legitimately
    appear in workflow logic, prompts, or documentation.
-8. Update the matching setup guide and review the complete diff.
+9. Update the matching setup guide and review the complete diff.

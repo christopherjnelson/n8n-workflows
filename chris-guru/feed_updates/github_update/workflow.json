@@ -110,8 +110,7 @@
         -64
       ],
       "id": "980cb09f-107f-4b32-a192-1cc32af82f49",
-      "name": "Create a row",
-      "credentials": {}
+      "name": "Create a row"
     },
     {
       "parameters": {
@@ -140,8 +139,7 @@
         160
       ],
       "id": "e7970188-359b-41ff-88fb-8cdbd0a9d131",
-      "name": "Qwen-3.6-Flash",
-      "credentials": {}
+      "name": "Qwen-3.6-Flash"
     },
     {
       "parameters": {
@@ -171,8 +169,7 @@
         -64
       ],
       "id": "1d1df112-f46e-4208-b496-2707e4d06837",
-      "name": "Github Trigger",
-      "credentials": {}
+      "name": "Github Trigger"
     }
   ],
   "connections": {

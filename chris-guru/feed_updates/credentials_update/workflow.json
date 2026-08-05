@@ -70,8 +70,7 @@
         64
       ],
       "id": "1cb9f581-ed38-49c0-8c62-243e0c60efab",
-      "name": "Create a row",
-      "credentials": {}
+      "name": "Create a row"
     },
     {
       "parameters": {
@@ -86,8 +85,7 @@
         192
       ],
       "id": "f85a3ee7-f3f9-403c-98ab-41282a413c56",
-      "name": "GetMSBadges",
-      "credentials": {}
+      "name": "GetMSBadges"
     },
     {
       "parameters": {
@@ -302,8 +300,7 @@
       ],
       "id": "c160adc9-0b13-4eb8-9eab-09a716b1faad",
       "name": "GetExistingPosts",
-      "executeOnce": true,
-      "credentials": {}
+      "executeOnce": true
     },
     {
       "parameters": {
@@ -365,8 +362,7 @@
         256
       ],
       "id": "16f60463-b9e8-4992-9aab-1ae756a9ac2e",
-      "name": "Create a post",
-      "credentials": {}
+      "name": "Create a post"
     },
     {
       "parameters": {
@@ -400,8 +396,7 @@
         384
       ],
       "id": "2dca6116-facb-4cb1-8415-2c7d715824e3",
-      "name": "Gemini-Flash-3.6",
-      "credentials": {}
+      "name": "Gemini-Flash-3.6"
     },
     {
       "parameters": {
@@ -635,6 +630,7 @@
   },
   "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": false
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
   }
 }
